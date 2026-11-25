@@ -25,8 +25,7 @@ export default function AboutPage() {
               day under a bar or your thousandth.
             </p>
             <p>
-              We keep it simple: solid equipment, fair prices with every fee shown up front, long hours and on-site
-              child care so parents can train too.
+              We keep it simple: solid equipment, fair prices with every fee shown up front, and long hours.
             </p>
             <div className="pt-2">
               <ButtonLink href="/memberships">See memberships</ButtonLink>

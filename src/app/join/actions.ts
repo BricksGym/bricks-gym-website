@@ -114,7 +114,6 @@ function gymEmail(app: Application, reference: string, submittedAt: string) {
   });
 
   const other: [string, string][] = [
-    ["Child care interest", app.childCareKids ? `${app.childCareKids} child(ren)` : "None"],
     ["Notes from applicant", app.notes],
     ["Reviewed membership terms", "Yes"],
     ["Acknowledged automatic renewal (separate checkbox)", "Yes"],

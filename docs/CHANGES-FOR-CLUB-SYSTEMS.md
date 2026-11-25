@@ -10,6 +10,7 @@ Send these to Club Systems (office@healthclubsystems.com, 800-227-6194) after yo
 
 - [ ] Load the new agreement word for word from `https://thebricksgym.com/legal/membership-terms.txt`.
 - [ ] Plans: Month-to-month, **6**, 12 and 24 months. **Remove 18-month** everywhere, including its $249 fee.
+- [ ] **Remove child care** (the old "Child care $4.50 per visit / $35 per month" condition). Bricks Gym doesn't offer it; the conditions are renumbered.
 - [ ] Add the 6-month early cancellation fee; keep 12-month ($199 or remaining dues, whichever is less) and 24-month ($299).
 - [ ] Replace the 24-hour right to cancel with the **5-business-day** notice, in bold, near the signature line.
 - [ ] Add a **separate, unchecked auto-renewal consent** (checkbox or initials), and store proof of it.

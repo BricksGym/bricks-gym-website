@@ -18,7 +18,6 @@ export const isExternal = (href: string) => /^https?:\/\//.test(href);
 export const nav = [
   { href: "/memberships", label: "Memberships" },
   { href: "/classes", label: "Classes & Amenities" },
-  { href: "/child-care", label: "Child Care" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },

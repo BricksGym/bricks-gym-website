@@ -70,11 +70,6 @@ function faqs(): Faq[] {
       a: `A yearly fee of ${money(fees.annualClubImprovement.amount)}${fees.annualClubImprovement.perMember ? " per member" : ""}, billed each ${fees.annualClubImprovement.month}. The Primary member pays it for everyone on the membership.`,
     },
     {
-      q: "Do you have child care?",
-      a: `Yes, for kids ${fees.childCare.minimumAgeMonths} months and up: ${money(fees.childCare.perVisit)} per child per visit or ${money(fees.childCare.monthly)} per child per month.`,
-      link: { href: "/child-care", label: "Child care details" },
-    },
-    {
       q: "Can I just come in for a day?",
       a: `Yes. Day passes are ${money(fees.dayPass)}.`,
       link: { href: "/day-pass", label: "Day pass" },

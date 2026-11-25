@@ -6,7 +6,6 @@ const paths = [
   "/memberships",
   "/join",
   "/classes",
-  "/child-care",
   "/day-pass",
   "/about",
   "/faq",

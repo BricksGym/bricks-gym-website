@@ -38,7 +38,7 @@ export const business = {
   legalName: "[LEGAL BUSINESS NAME — PLACEHOLDER]", // PLACEHOLDER (still changing)
   tagline: "Old-school iron. Watsonville strong.",
   description:
-    "Bricks Gym is an independent, family-friendly gym on Main Street in Watsonville, CA, with free weights, cardio and on-site child care.",
+    "Bricks Gym is an independent, family-friendly gym on Main Street in Watsonville, CA, with free weights and cardio.",
   address: {
     street: "1810 Main Street",
     city: "Watsonville",
@@ -190,11 +190,6 @@ export const fees = {
     perMember: true,
   },
   dayPass: 15,
-  childCare: {
-    perVisit: 4.5,
-    monthly: 35,
-    minimumAgeMonths: 6,
-  },
   freeze: {
     perMonth: 10,
     minMonths: 1,
@@ -286,7 +281,6 @@ export const clubSystems = {
 export const amenities: { name: string; description: string }[] = [
   { name: "Free Weights", description: "Racks, plates, dumbbells and benches." }, // PLACEHOLDER
   { name: "Cardio", description: "Treadmills, bikes and more." }, // PLACEHOLDER
-  { name: "On-Site Child Care", description: "Train while the kids are looked after, from 6 months old." },
   { name: "Group Fitness", description: "Class schedule coming soon." }, // PLACEHOLDER
 ];
 

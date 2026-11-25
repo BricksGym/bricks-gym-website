@@ -37,7 +37,7 @@ export function agreementSections(): AgreementSection[] {
   const f = fees;
   const gym = business.name;
 
-  return [
+  const sections: AgreementSection[] = [
     {
       id: "parties",
       title: "About this agreement",
@@ -103,7 +103,7 @@ export function agreementSections(): AgreementSection[] {
       body: [
         "You authorize the Gym, through its billing provider (Club Systems), to charge your monthly dues, the annual Club Improvement fee and any other fees you agree to, to the card or bank account you provide, until you cancel as described in this agreement.",
         `A fee of ${money(f.returnedPayment)} applies to each returned or failed payment.`,
-        "**Automatic renewal:** your membership renews automatically each month after the initial term (or each month, for month-to-month) and will be charged at the same monthly rate until you cancel. **You can cancel online at any time** on our website's cancellation page, as well as in person, by email or by mail (see section 9 of the Conditions).",
+        "**Automatic renewal:** your membership renews automatically each month after the initial term (or each month, for month-to-month) and will be charged at the same monthly rate until you cancel. **You can cancel online at any time** on our website's cancellation page, as well as in person, by email or by mail (see Condition {{c-termination}}).",
         "Your consent to automatic renewal is given separately, by a checkbox or initials, and is not pre-checked.",
         "We will send you an acknowledgment of these terms, including how to cancel, after you join; a yearly reminder of your membership terms; and notice at least 7 days (and no more than 30 days) before any change in price, explaining the change and how to cancel.",
       ],
@@ -187,13 +187,6 @@ export function agreementSections(): AgreementSection[] {
       ],
     },
     {
-      id: "c-childcare",
-      title: "Conditions 6. Child care",
-      body: [
-        `Child care is ${money(f.childCare.perVisit)} per child per visit or ${money(f.childCare.monthly)} per child per month, for children ${f.childCare.minimumAgeMonths} months and older. Rates and availability may change.`,
-      ],
-    },
-    {
       id: "c-guests",
       title: "Conditions 7. Non-members",
       body: [`Non-members pay a ${money(f.dayPass)} day-use fee.`],
@@ -202,7 +195,7 @@ export function agreementSections(): AgreementSection[] {
       id: "c-nonrefundable",
       title: "Conditions 8. Non-refundable fees",
       body: [
-        "The enrollment fee, last month's dues and paid-in-full fees are non-refundable, except (a) when you cancel within the right-to-cancel period in section 9 above, (b) as described in Conditions 11 and 12, and (c) as required by law. Closures ordered by the government or the property owner, and natural disasters, are covered by Condition 16.",
+        "The enrollment fee, last month's dues and paid-in-full fees are non-refundable, except (a) when you cancel within the right-to-cancel period in section 9 above, (b) as described in Conditions {{c-relocation}} and {{c-death}}, and (c) as required by law. Closures ordered by the government or the property owner, and natural disasters, are covered by Condition {{c-unavailability}}.",
       ],
     },
     {
@@ -236,7 +229,7 @@ export function agreementSections(): AgreementSection[] {
       id: "c-death",
       title: "Conditions 12. Death or disability",
       body: [
-        "If a member dies, the member's estate is released from all future payments. If a member becomes disabled and cannot use the Gym, the member may cancel as described in Condition 10.",
+        "If a member dies, the member's estate is released from all future payments. If a member becomes disabled and cannot use the Gym, the member may cancel as described in Condition {{c-freeze}}.",
       ],
     },
     {
@@ -290,6 +283,20 @@ export function agreementSections(): AgreementSection[] {
       ],
     },
   ];
+
+  // Number the conditions automatically (1, 2, 3…) so adding or removing one
+  // never leaves gaps, and fill in cross-references written as {{c-id}}.
+  const numbers: Record<string, number> = {};
+  let n = 0;
+  for (const s of sections) {
+    if (!s.id.startsWith("c-")) continue;
+    numbers[s.id] = ++n;
+    s.title = `Conditions ${n}. ${s.title.replace(/^Conditions \d+\.\s*/, "")}`;
+  }
+  for (const s of sections) {
+    s.body = s.body.map((line) => line.replace(/\{\{(c-[a-z-]+)\}\}/g, (_, id: string) => String(numbers[id] ?? "?")));
+  }
+  return sections;
 }
 
 function earlyCancellationLike(x: { fee: number; orRemainingDuesIfLess: boolean }) {

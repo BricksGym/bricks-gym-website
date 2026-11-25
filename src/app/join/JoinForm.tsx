@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
-import { additionalMember, afterTerm, business, fees, onlineApplication, plans, rules, type PlanId } from "@/config/gym";
+import { additionalMember, afterTerm, business, onlineApplication, plans, rules, type PlanId } from "@/config/gym";
 import {
   applicationSchema,
   familyMemberSchema,
@@ -59,7 +59,6 @@ export function JoinForm() {
   );
   const [primary, setPrimary] = useState<PrimaryInput>(emptyPrimary);
   const [family, setFamily] = useState<FamilyInput[]>([]);
-  const [childCareKids, setChildCareKids] = useState(0);
   const [notes, setNotes] = useState("");
   const [agree, setAgree] = useState({ terms: false, autoRenew: false, guardian: false, contact: false });
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -132,7 +131,6 @@ export function JoinForm() {
       plan,
       primary,
       family,
-      childCareKids,
       notes,
       agreeTermsReviewed: agree.terms,
       agreeAutoRenew: agree.autoRenew,
@@ -281,27 +279,6 @@ export function JoinForm() {
                     ))}
                   </select>
                   <p className="mt-1 text-sm text-concrete">You&apos;ll be the Primary member and pay for everyone.</p>
-                </div>
-                <div>
-                  <label htmlFor="childcare" className="block font-semibold">
-                    Interested in child care?
-                  </label>
-                  <select
-                    id="childcare"
-                    value={childCareKids}
-                    onChange={(e) => setChildCareKids(Number(e.target.value))}
-                    className="mt-1 block w-full rounded border-2 border-ink/20 bg-white px-3 py-2.5"
-                  >
-                    <option value={0}>No</option>
-                    {[1, 2, 3, 4].map((n) => (
-                      <option key={n} value={n}>
-                        Yes, {n} {n === 1 ? "child" : "children"}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="mt-1 text-sm text-concrete">
-                    {money(fees.childCare.perVisit)}/visit or {money(fees.childCare.monthly)}/month per child, billed separately.
-                  </p>
                 </div>
               </div>
             </>

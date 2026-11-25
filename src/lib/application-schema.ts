@@ -104,7 +104,6 @@ export const applicationSchema = z
     plan: z.enum(planIds),
     primary: primarySchema,
     family: z.array(familyMemberSchema).max(additionalMember.maxOnlineApplication),
-    childCareKids: z.number().int().min(0).max(6),
     notes: z.string().trim().max(1000),
     agreeTermsReviewed: z.literal(true, { error: "Please confirm you've reviewed the membership terms." }),
     agreeAutoRenew: z.literal(true, { error: "Please confirm you understand automatic renewal." }),

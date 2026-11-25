@@ -142,12 +142,6 @@ export default function Home() {
               </a>
             </p>
             <HoursTable className="mt-6 max-w-sm" />
-            <p className="mt-4 text-sm text-concrete">
-              On-site child care for kids {fees.childCare.minimumAgeMonths} months and up.{" "}
-              <Link href="/child-care" className="text-brick underline">
-                Learn more
-              </Link>
-            </p>
           </div>
           <MapEmbed />
         </div>

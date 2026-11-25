@@ -4,7 +4,7 @@ import { Eyebrow, H2, PageHero, PrelaunchNote, Section } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Classes & Amenities",
-  description: "Free weights, cardio, group fitness and on-site child care at Bricks Gym in Watsonville.",
+  description: "Free weights, cardio and group fitness at Bricks Gym in Watsonville.",
   alternates: { canonical: "/classes" },
 };
 

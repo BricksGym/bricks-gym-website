@@ -12,11 +12,6 @@ export function otherFees(): { name: string; amount: string; note?: string }[] {
     },
     { name: "Day pass (non-members)", amount: money(f.dayPass) },
     {
-      name: "Child care",
-      amount: `${money(f.childCare.perVisit)} per child per visit, or ${money(f.childCare.monthly)} per child per month`,
-      note: `Children ${f.childCare.minimumAgeMonths} months and older.`,
-    },
-    {
       name: "Membership freeze",
       amount: `${money(f.freeze.perMonth)} per month`,
       note: `${f.freeze.minMonths}–${f.freeze.maxMonthsPerYear} months per year, paid in advance.`,
