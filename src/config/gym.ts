@@ -47,9 +47,10 @@ export const business = {
   },
   /** From public listings for this address — confirm before launch. */
   phone: "(831) 728-1280", // PLACEHOLDER (from an online listing — confirm)
-  email: "info@example.com", // PLACEHOLDER (public email shown on the site)
-  /** Where membership applications, contact messages and cancellations are sent. */
-  inboxEmail: "info@example.com", // PLACEHOLDER
+  /** Public email shown on the site. Empty ("") = hidden. Use a Bricks Gym address, e.g. hello@thebricksgym.com. */
+  email: "", // PLACEHOLDER (needed before launch: members must be able to cancel by email)
+  /** Where membership applications, contact messages and cancellations are sent. Never shown on the site. */
+  inboxEmail: "831bodyzone@gmail.com",
   /** Mailing address for written notices (cancellations, etc.). */
   noticeAddress: "Bricks Gym, Attn: Owner, 1810 Main Street, Watsonville, CA 95076",
   /** Website address once you buy a domain, no trailing slash. */

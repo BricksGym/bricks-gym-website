@@ -29,8 +29,13 @@ export default function CancelPage() {
                 You&apos;ll get a full refund.
               </li>
               <li>
-                You can also cancel in person, by email from the address on your account to{" "}
-                <a href={`mailto:${business.email}`}>{business.email}</a>, or by mail to {business.noticeAddress}.
+                You can also cancel in person, by email from the address on your account
+                {business.email && (
+                  <>
+                    {" "}to <a href={`mailto:${business.email}`}>{business.email}</a>
+                  </>
+                )}
+                , or by mail to {business.noticeAddress}.
               </li>
             </ul>
           </Prose>

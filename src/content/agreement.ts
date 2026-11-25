@@ -132,7 +132,7 @@ export function agreementSections(): AgreementSection[] {
       emphasized: true,
       body: [
         `**YOU, THE BUYER, MAY CANCEL THIS AGREEMENT AT ANY TIME BEFORE MIDNIGHT OF THE GYM'S ${["", "FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH", "SEVENTH"][rules.rightToCancelBusinessDays] ?? rules.rightToCancelBusinessDays} BUSINESS DAY AFTER THE DATE YOU SIGN IT, EXCLUDING SUNDAYS AND HOLIDAYS.**`,
-        `**To cancel, deliver or mail a signed and dated notice stating that you are cancelling this agreement to: ${business.noticeAddress}, or email it to ${business.email}, or use the cancellation page on our website. If you cancel within this period, all money you paid will be refunded within 10 days of our receiving your notice.**`,
+        `**To cancel, deliver or mail a signed and dated notice stating that you are cancelling this agreement to: ${business.noticeAddress}, or email it to ${business.email || "[GYM EMAIL — PLACEHOLDER]"}, or use the cancellation page on our website. If you cancel within this period, all money you paid will be refunded within 10 days of our receiving your notice.**`,
       ],
     },
     {

@@ -84,8 +84,13 @@ export default function PrivacyPage() {
           <h2>Your choices</h2>
           <p>
             You can ask to see, correct or delete the personal information we hold about you, subject to legal requirements
-            to keep certain records. Contact us at{" "}
-            <a href={`mailto:${business.email}`}>{business.email}</a> or {business.phone}, or visit the front desk.
+            to keep certain records. Contact us{" "}
+            {business.email && (
+              <>
+                at <a href={`mailto:${business.email}`}>{business.email}</a> or{" "}
+              </>
+            )}
+            by phone at {business.phone}, or visit the front desk.
           </p>
 
           <h2>Contact</h2>

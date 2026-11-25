@@ -60,7 +60,7 @@ export async function submitCancellation(input: unknown): Promise<FormResult> {
     await sendEmail({
       to: c.email,
       subject: `We received your cancellation request (${reference})`,
-      replyTo: business.email,
+      replyTo: business.email || business.inboxEmail,
       html: emailLayout(
         "Your cancellation request was received",
         `<p>Hi ${escapeHtml(c.firstName)}, we received your request to cancel your ${escapeHtml(business.name)} membership on <strong>${escapeHtml(timestamp)}</strong>. Your request number is <strong>${escapeHtml(reference)}</strong>. Keep this email as your proof of cancellation.</p>
@@ -72,7 +72,7 @@ export async function submitCancellation(input: unknown): Promise<FormResult> {
   } catch {
     return {
       ok: false,
-      message: `Sorry, we couldn't submit your request. Please try again, email ${business.email}, or mail your notice to ${business.noticeAddress}.`,
+      message: `Sorry, we couldn't submit your request. Please try again${business.email ? `, email ${business.email}` : ""}, call ${business.phone}, or mail your notice to ${business.noticeAddress}.`,
     };
   }
   return { ok: true, reference, timestamp };

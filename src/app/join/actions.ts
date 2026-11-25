@@ -206,6 +206,6 @@ function applicantEmail(app: Application, reference: string) {
     subject: `We got your ${business.name} application (${reference})`,
     html,
     text,
-    replyTo: business.email,
+    replyTo: business.email || business.inboxEmail,
   };
 }

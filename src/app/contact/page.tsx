@@ -36,10 +36,14 @@ export default function ContactPage() {
                 <a href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`} className="font-semibold text-brick">
                   {business.phone}
                 </a>
-                <br />
-                <a href={`mailto:${business.email}`} className="text-brick underline">
-                  {business.email}
-                </a>
+                {business.email && (
+                  <>
+                    <br />
+                    <a href={`mailto:${business.email}`} className="text-brick underline">
+                      {business.email}
+                    </a>
+                  </>
+                )}
               </address>
             </div>
             <HoursTable />

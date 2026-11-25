@@ -26,10 +26,14 @@ export function Footer() {
             <a href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`} className="hover:text-bone">
               {business.phone}
             </a>
-            <br />
-            <a href={`mailto:${business.email}`} className="hover:text-bone">
-              {business.email}
-            </a>
+            {business.email && (
+              <>
+                <br />
+                <a href={`mailto:${business.email}`} className="hover:text-bone">
+                  {business.email}
+                </a>
+              </>
+            )}
           </address>
         </div>
 
