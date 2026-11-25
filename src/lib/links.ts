@@ -1,4 +1,4 @@
-import { clubSystems, type PlanId } from "@/config/gym";
+import { clubSystems, remodel, type PlanId } from "@/config/gym";
 
 /** Where a plan's Join button goes: Club Systems if set, otherwise our application. */
 export function joinHref(plan: PlanId | "day-pass"): string {
@@ -17,6 +17,7 @@ export const isExternal = (href: string) => /^https?:\/\//.test(href);
 
 export const nav = [
   { href: "/memberships", label: "Memberships" },
+  ...(remodel.show ? [{ href: "/remodel", label: "Remodel" }] : []),
   { href: "/classes", label: "Classes & Amenities" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },

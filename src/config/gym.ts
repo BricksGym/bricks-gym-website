@@ -34,6 +34,8 @@ export const PRELAUNCH = true;
 // ---------------------------------------------------------------------------
 export const business = {
   name: "Bricks Gym",
+  /** Shown as "Formerly ___" in the bar at the top of every page. Empty ("") = hidden. */
+  formerName: "Body Zone",
   /** Legal owner name for contracts and the privacy policy. */
   legalName: "[LEGAL BUSINESS NAME — PLACEHOLDER]", // PLACEHOLDER (still changing)
   tagline: "Old-school iron. Watsonville strong.",
@@ -277,12 +279,38 @@ export const clubSystems = {
 // ---------------------------------------------------------------------------
 // 8. AMENITIES, CLASSES, PHOTOS, REVIEWS
 // ---------------------------------------------------------------------------
-/** Shown on the home and Classes & Amenities pages. Edit freely. */
-export const amenities: { name: string; description: string }[] = [
+/**
+ * Shown on the home and Classes & Amenities pages. Edit freely.
+ * comingSoon: true shows a "Coming soon" tag (remove it once it's open).
+ */
+export const amenities: { name: string; description: string; comingSoon?: boolean }[] = [
   { name: "Free Weights", description: "Racks, plates, dumbbells and benches." }, // PLACEHOLDER
   { name: "Cardio", description: "Treadmills, bikes and more." }, // PLACEHOLDER
   { name: "Group Fitness", description: "Class schedule coming soon." }, // PLACEHOLDER
+  { name: "Sauna", description: "Heat up and recover after your workout.", comingSoon: true },
 ];
+
+// ---------------------------------------------------------------------------
+// 8b. REMODEL (the "Remodel" tab)
+// ---------------------------------------------------------------------------
+/** Set show: false to hide the Remodel tab, banner link and home section once it's finished. */
+export const remodel = {
+  show: true,
+  headline: "A huge remodel is underway",
+  intro:
+    "We're rebuilding the gym from the floor up. New equipment, more space and a whole new look are on the way, and we can't wait to show you.",
+  /** Shown on the Remodel page. Add a date like "Spring 2027" when you know it. */
+  timeline: "", // PLACEHOLDER e.g. "Finishing early 2027"
+  upgrades: [
+    { name: "New machines", description: "Brand-new strength and cardio equipment is on its way." },
+    { name: "Bigger workout space", description: "More room to lift, stretch and train without waiting." },
+    { name: "New flooring", description: "Fresh, durable gym flooring throughout." },
+    { name: "Fresh paint", description: "Every wall repainted for a clean new look." },
+    { name: "New sound system", description: "Better music to push you through every set." },
+    { name: "Sauna", description: "A new sauna for recovery after your workout." },
+  ],
+  closing: "And that's just the start. Huge things are coming to Bricks Gym.",
+};
 
 /** Classes: add one line per class. Empty = "schedule coming soon". */
 export const classes: { name: string; when: string; description: string }[] = [];

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { amenities, classes, clubSystems, personalTraining } from "@/config/gym";
-import { Eyebrow, H2, PageHero, PrelaunchNote, Section } from "@/components/ui";
+import { ComingSoon, Eyebrow, H2, PageHero, PrelaunchNote, Section } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Classes & Amenities",
@@ -19,7 +19,10 @@ export default function ClassesPage() {
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">
           {amenities.map((a) => (
             <li key={a.name} className="rounded-md border-l-4 border-brick bg-paper p-5">
-              <h3 className="font-condensed text-xl font-semibold uppercase tracking-wide">{a.name}</h3>
+              <h3 className="font-condensed text-xl font-semibold uppercase tracking-wide">
+                {a.name}
+                {a.comingSoon && <ComingSoon />}
+              </h3>
               <p className="mt-1 text-iron">{a.description}</p>
             </li>
           ))}

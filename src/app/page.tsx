@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { amenities, business, fees, photos, plans, PRELAUNCH, testimonials } from "@/config/gym";
+import { amenities, business, fees, photos, plans, PRELAUNCH, remodel, testimonials } from "@/config/gym";
 import { Logo } from "@/components/Logo";
 import { PlanCard } from "@/components/PlanCard";
 import { HoursTable } from "@/components/HoursTable";
 import { MapEmbed } from "@/components/MapEmbed";
 import { JoinLink } from "@/components/JoinLink";
-import { ButtonLink, Container, Eyebrow, H2, PrelaunchNote, Section } from "@/components/ui";
+import { ButtonLink, ComingSoon, Container, Eyebrow, H2, PrelaunchNote, Section } from "@/components/ui";
 import { money } from "@/lib/pricing";
 
 export default function Home() {
@@ -34,6 +34,29 @@ export default function Home() {
           </div>
         </Container>
       </section>
+
+      {/* Remodel teaser */}
+      {remodel.show && (
+        <section className="border-b-4 border-brick bg-ink text-white">
+          <Container className="grid gap-8 py-14 md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <Eyebrow light>Remodel</Eyebrow>
+              <H2 light>{remodel.headline}</H2>
+              <p className="mt-3 max-w-2xl text-white/80">{remodel.intro}</p>
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {remodel.upgrades.map((u) => (
+                  <li key={u.name} className="rounded border border-white/25 px-3 py-1 font-condensed text-sm uppercase tracking-wider">
+                    {u.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <ButtonLink href="/remodel" size="lg">
+              See what&apos;s coming
+            </ButtonLink>
+          </Container>
+        </section>
+      )}
 
       {/* Plans */}
       <Section>
@@ -63,7 +86,10 @@ export default function Home() {
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {amenities.map((a) => (
             <li key={a.name} className="rounded-md border-l-4 border-brick bg-white p-5">
-              <h3 className="font-condensed text-xl font-semibold uppercase tracking-wide">{a.name}</h3>
+              <h3 className="font-condensed text-xl font-semibold uppercase tracking-wide">
+                {a.name}
+                {a.comingSoon && <ComingSoon />}
+              </h3>
               <p className="mt-1 text-iron">{a.description}</p>
             </li>
           ))}

@@ -4,6 +4,7 @@ import { business } from "@/config/gym";
 const paths = [
   "",
   "/memberships",
+  "/remodel",
   "/join",
   "/classes",
   "/day-pass",

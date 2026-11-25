@@ -91,6 +91,15 @@ export function PrelaunchNote({ children }: { children: ReactNode }) {
   );
 }
 
+/** Small "Coming soon" tag. */
+export function ComingSoon() {
+  return (
+    <span className="ml-2 inline-block rounded bg-brick px-2 py-0.5 align-middle text-xs font-semibold tracking-wider text-white">
+      Coming soon
+    </span>
+  );
+}
+
 /** Text wrapper for long pages (FAQ, legal pages). */
 export function Prose({ children }: { children: ReactNode }) {
   return (

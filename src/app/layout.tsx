@@ -5,6 +5,7 @@ import "./globals.css";
 import { business, hoursForGoogle } from "@/config/gym";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { TopBar } from "@/components/TopBar";
 import { Logo } from "@/components/Logo";
 import { memberLoginHref } from "@/lib/links";
 
@@ -38,6 +39,7 @@ const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "HealthClub",
   name: business.name,
+  ...(business.formerName ? { alternateName: business.formerName } : {}),
   description: business.description,
   url: business.siteUrl,
   telephone: business.phone,
@@ -66,6 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema).replace(/</g, "\\u003c") }}
         />
+        <TopBar />
         <Header logo={<Logo priority className="w-32 sm:w-40" />} memberLoginHref={memberLoginHref()} />
         <main id="main" className="flex-1">
           {children}
