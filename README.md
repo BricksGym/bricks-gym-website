@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bricks Gym website
 
-## Getting Started
+The public website for Bricks Gym, 1810 Main Street, Watsonville, CA.
 
-First, run the development server:
+## How it works (plain English)
+
+- **The website is the shop window.** It shows plans, prices, hours, FAQ and legal terms.
+- **Joining:** visitors fill out an online application. The website emails it to you (`inboxEmail` in the settings file), laid out in the same order as the membership form, with the **member number left blank**. You enter the member into **Club Systems**, assign the member number there, then have the person sign the agreement and set up payment.
+- **No card or bank details ever touch this website.** Payments happen only in Club Systems. No Stripe or other payment processor.
+- **Cancelling:** members can cancel online at `/cancel` (California law requires this for anyone who joined online). It emails you and the member right away with a timestamped request number. You process it in Club Systems.
+- **Club Systems stays the system of record.** The website keeps no database of members.
+
+## Change prices, fees, hours or contact details
+
+Everything lives in **one file: `src/config/gym.ts`**. Open it in any text editor, change the numbers or text, and save. Search it for `PLACEHOLDER` to find everything still to fill in.
+
+- Prices and fees: sections 4 and 5.
+- Hours: section 3. Update both the readable list and the "Google format" list below it.
+- Club Systems links (member portal, app, Join Now pages): section 7. When a Join Now link is filled in, that plan's Join button goes straight to Club Systems instead of the application form.
+- Photos: put image files in `public/images/` and list them in section 8.
+- Reviews: section 8. **Real reviews only.**
+- When every placeholder is filled in, set `PRELAUNCH = false` at the top. That removes the "sample pricing" notices and lets Google index the site.
+
+The membership agreement text is in `src/content/agreement.ts`. It fills in prices from the settings file automatically.
+
+## Keep the agreement identical in both places
+
+The website's Membership Terms page and the agreement in Club Systems must match word for word.
+
+1. Edit `src/content/agreement.ts` (after your lawyer's review).
+2. Open `https://YOUR-DOMAIN/legal/membership-terms.txt`, copy everything, and send it to Club Systems to load as the agreement template.
+
+## Run it on this computer
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000. Test applications are saved in the `.local-submissions` folder instead of being emailed. That folder is never uploaded. Delete its files when you're done.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other commands: `npm test` (price math checks), `npm run build` (full production build).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Put it online (Vercel)
 
-## Learn More
+1. Create a free account at vercel.com (and optionally github.com to back up the code).
+2. Import this project into Vercel.
+3. Add the settings from `.env.example` under Project → Settings → Environment Variables:
+   - **Resend** (resend.com): an API key and a "from" address on your verified domain. Without these, forms won't send in production.
+   - **Cloudflare Turnstile** (free): spam protection for the forms.
+   - **Plausible** (optional, paid): privacy-friendly visitor stats, including "Join" clicks.
+4. Buy the domain and connect it in Vercel → Project → Settings → Domains. Then update `siteUrl` in `src/config/gym.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+## Before launch: test checklist
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Fill in every `PLACEHOLDER` and set `PRELAUNCH = false`.
+2. Have your lawyer review the items in [docs/LEGAL-REVIEW-NEEDED.md](docs/LEGAL-REVIEW-NEEDED.md).
+3. Send Club Systems the items in [docs/CHANGES-FOR-CLUB-SYSTEMS.md](docs/CHANGES-FOR-CLUB-SYSTEMS.md).
+4. On the live site, submit one real application end to end: check the email arrives, enter it into Club Systems, sign and pay at the desk, and confirm it shows up correctly at the front desk and in billing.
+5. Submit one test cancellation and check both emails arrive.
+6. Send a contact-form message.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Who to call
 
-## Deploy on Vercel
+| Problem | Who |
+|---|---|
+| Prices, hours, text on the website | You: edit `src/config/gym.ts` |
+| Website down, forms not sending | Your web developer / Vercel status page; check Resend for email problems |
+| Member records, billing, check-in, member portal, agreement template | Club Systems: office@healthclubsystems.com, 800-227-6194 |
+| Domain name | Wherever you bought it (e.g. Vercel or Cloudflare) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Security notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Application emails contain driver's license numbers. **Delete each one after entering it into Club Systems**, and keep the inbox protected with two-step login.
+- Personal data is never written to logs or put in web addresses.
+- The site sends strict security headers and only allows content from Google Maps, Cloudflare and (once added) Club Systems.

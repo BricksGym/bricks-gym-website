@@ -40,10 +40,8 @@ export function termLabel(plan: Plan): string {
 
 export function earlyCancellationText(plan: Plan): string {
   const ec = plan.earlyCancellation;
-  if (!ec) return "None — cancel with 30 days' written notice";
-  return ec.orRemainingDuesIfLess
-    ? `${money(ec.fee)} or your remaining dues, whichever is less`
-    : money(ec.fee);
+  if (!ec) return "None";
+  return ec.orRemainingDuesIfLess ? `${money(ec.fee)} or remaining dues, whichever is less` : money(ec.fee);
 }
 
 export type QuoteLine = { label: string; cents: number };

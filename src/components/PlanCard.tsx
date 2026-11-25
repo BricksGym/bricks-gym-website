@@ -19,9 +19,9 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
         <h3 id={`plan-${plan.id}`} className="font-display text-2xl text-ink">
           {plan.name}
         </h3>
-        <p className="mt-2 flex items-baseline gap-1">
+        <p className="mt-2 flex flex-wrap items-baseline gap-x-1">
           <span className="font-display text-4xl text-brick">{money(plan.monthlyDues)}</span>
-          <span className="text-concrete">/ month</span>
+          <span className="whitespace-nowrap text-concrete">/ month</span>
         </p>
         <p className="mt-2 text-sm text-iron">{plan.blurb}</p>
       </div>

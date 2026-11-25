@@ -49,7 +49,7 @@ export default function Home() {
         <div className="mt-4">
           <PrelaunchNote>Prices shown are sample numbers until final pricing is set.</PrelaunchNote>
         </div>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {plans.map((p) => (
             <PlanCard key={p.id} plan={p} location="home" />
           ))}
