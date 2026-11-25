@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { afterTerm, business, clubSystems, extraFaqs, fees, rules } from "@/config/gym";
+import { afterTerm, business, clubSystems, extraFaqs, fees, remodel, rules } from "@/config/gym";
 import { PageHero, Section } from "@/components/ui";
 import { money } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "FAQ",
-  description: "How to join Bricks Gym, check in, freeze, cancel and update your payment card.",
+  description: `${business.name}${business.formerName ? ` (formerly ${business.formerName})` : ""} FAQ: the remodel, joining, check-in, freezing, cancelling and more.`,
   alternates: { canonical: "/faq" },
 };
 
@@ -15,7 +15,44 @@ type Faq = { q: string; a: string; link?: { href: string; label: string } };
 function faqs(): Faq[] {
   const portal = clubSystems.memberPortalUrl;
   const desk = `the front desk or call ${business.phone}`;
+  const { street, city } = business.address;
+  const upgrades = remodel.upgrades.map((u) => u.name.toLowerCase());
+  const upgradeList =
+    upgrades.length > 1 ? `${upgrades.slice(0, -1).join(", ")} and ${upgrades[upgrades.length - 1]}` : upgrades.join("");
+
+  const nameChange: Faq[] = business.formerName
+    ? [
+        {
+          q: `Is ${business.formerName} now ${business.name}?`,
+          a: `Yes. ${business.formerName} is becoming ${business.name}. Same place at ${street} in ${city}, with a new name and a whole new look on the way.`,
+        },
+        {
+          q: `I'm a ${business.formerName} member. What does the name change mean for me?`,
+          a: `If you have questions about your current membership, stop by ${desk}. We're happy to help.`,
+        },
+      ]
+    : [];
+
+  const remodelFaqs: Faq[] = remodel.show
+    ? [
+        {
+          q: "What's happening with the remodel?",
+          a: `A huge remodel is underway. We're adding ${upgradeList}. ${remodel.closing}`,
+          link: { href: "/remodel", label: "See the remodel plans" },
+        },
+        {
+          q: "When will the remodel be finished?",
+          a: remodel.timeline
+            ? `${remodel.timeline}. Check the Remodel page for the latest updates.`
+            : "The remodel is underway now. We'll share dates as each upgrade arrives, so check the Remodel page for the latest updates.",
+          link: { href: "/remodel", label: "Remodel updates" },
+        },
+      ]
+    : [];
+
   return [
+    ...nameChange,
+    ...remodelFaqs,
     {
       q: "How do I join online?",
       a: "Pick a plan and fill out the online application. It takes about 5 minutes and nothing is charged online. We'll contact you to finish up at the front desk, where you sign your membership agreement and set up payment securely.",
