@@ -309,6 +309,8 @@ export const remodel = {
     { name: "New sound system", description: "Better music to push you through every set." },
     { name: "Sauna", description: "A new sauna for recovery after your workout." },
   ],
+  /** One-sentence summary used in the FAQ. */
+  summary: "new machines, a bigger workout space, new flooring, fresh paint on every wall, a new sound system and a sauna",
   closing: "And that's just the start. Huge things are coming to Bricks Gym.",
 };
 

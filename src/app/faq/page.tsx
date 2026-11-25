@@ -16,9 +16,6 @@ function faqs(): Faq[] {
   const portal = clubSystems.memberPortalUrl;
   const desk = `the front desk or call ${business.phone}`;
   const { street, city } = business.address;
-  const upgrades = remodel.upgrades.map((u) => u.name.toLowerCase());
-  const upgradeList =
-    upgrades.length > 1 ? `${upgrades.slice(0, -1).join(", ")} and ${upgrades[upgrades.length - 1]}` : upgrades.join("");
 
   const nameChange: Faq[] = business.formerName
     ? [
@@ -37,7 +34,7 @@ function faqs(): Faq[] {
     ? [
         {
           q: "What's happening with the remodel?",
-          a: `A huge remodel is underway. We're adding ${upgradeList}. ${remodel.closing}`,
+          a: `A huge remodel is underway. We're adding ${remodel.summary}. ${remodel.closing}`,
           link: { href: "/remodel", label: "See the remodel plans" },
         },
         {
