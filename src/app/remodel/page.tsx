@@ -17,6 +17,11 @@ export default function RemodelPage() {
     <>
       <PageHero eyebrow="Remodel" title={remodel.headline}>
         {remodel.intro}
+        {remodel.openStatus && (
+          <p className="mt-4 inline-block rounded bg-brick px-3 py-1.5 font-condensed text-base font-semibold uppercase tracking-wider text-white">
+            {remodel.openStatus}
+          </p>
+        )}
       </PageHero>
 
       <Section>

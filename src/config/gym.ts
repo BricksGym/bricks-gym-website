@@ -299,6 +299,8 @@ export const remodel = {
   headline: "A huge remodel is underway",
   intro:
     "We're rebuilding the gym from the floor up. New equipment, more space and a whole new look are on the way, and we can't wait to show you.",
+  /** Shown on the Remodel page and in the FAQ. Empty ("") = hidden. */
+  openStatus: "We're open as usual during the remodel. Come train while we build.",
   /** Shown on the Remodel page. Add a date like "Spring 2027" when you know it. */
   timeline: "", // PLACEHOLDER e.g. "Finishing early 2027"
   upgrades: [

@@ -37,6 +37,9 @@ function faqs(): Faq[] {
           a: `A huge remodel is underway. We're adding ${remodel.summary}. ${remodel.closing}`,
           link: { href: "/remodel", label: "See the remodel plans" },
         },
+        ...(remodel.openStatus
+          ? [{ q: "Is the gym open during the remodel?", a: `Yes. ${remodel.openStatus} Hours are listed at the bottom of every page.` }]
+          : []),
         {
           q: "When will the remodel be finished?",
           a: remodel.timeline
