@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * BRICKS GYM BRAND COLORS
+ * Send these to Club Systems if their pages can be themed.
+ *   Brick red (primary) .... #8B1E22
+ *   Brick dark ............. #5E1316
+ *   Brick bright (hover) ... #A82A2F
+ *   Ink (near-black) ....... #141111
+ *   Iron (dark gray) ....... #2A2524
+ *   Concrete (mid gray) .... #6E6663
+ *   Bone (off-white) ....... #F3EDE3
+ *   Paper (page background)  #FAF7F2
+ * Fonts: headings "Alfa Slab One", labels "Oswald", body text "Inter"
+ * (all free on Google Fonts).
+ */
+@theme {
+  --color-brick: #8b1e22;
+  --color-brick-dark: #5e1316;
+  --color-brick-bright: #a82a2f;
+  --color-ink: #141111;
+  --color-iron: #2a2524;
+  --color-concrete: #6e6663;
+  --color-bone: #f3ede3;
+  --color-paper: #faf7f2;
+
+  --font-display: var(--font-alfa), "Rockwell", serif;
+  --font-condensed: var(--font-oswald), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Small uppercase section labels. */
+.stamp {
+  font-family: var(--font-condensed);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+
+/* Visible keyboard focus everywhere (accessibility). */
+:focus-visible {
+  outline: 3px solid var(--color-brick-bright);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

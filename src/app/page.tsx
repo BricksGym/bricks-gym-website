@@ -1,69 +1,171 @@
 import Image from "next/image";
+import Link from "next/link";
+import { amenities, business, fees, photos, plans, PRELAUNCH, testimonials } from "@/config/gym";
+import { Logo } from "@/components/Logo";
+import { PlanCard } from "@/components/PlanCard";
+import { HoursTable } from "@/components/HoursTable";
+import { MapEmbed } from "@/components/MapEmbed";
+import { JoinLink } from "@/components/JoinLink";
+import { ButtonLink, Container, Eyebrow, H2, PrelaunchNote, Section } from "@/components/ui";
+import { money } from "@/lib/pricing";
 
 export default function Home() {
+  const { address } = business;
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      {/* Hero */}
+      <section className="border-b border-ink/10 bg-paper">
+        <Container className="flex flex-col items-center py-14 text-center sm:py-20">
+          <h1 className="sr-only">Bricks Gym — gym in Watsonville, CA</h1>
+          <Logo priority className="w-full max-w-xl" />
+          <p className="mt-6 font-condensed text-xl uppercase tracking-[0.2em] text-iron sm:text-2xl">
+            {business.tagline}
           </p>
+          <p className="mt-2 text-concrete">
+            {address.street}, {address.city}, {address.state}
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <JoinLink href="/memberships" plan="any" location="home-hero" size="lg">
+              Join Now
+            </JoinLink>
+            <ButtonLink href="/day-pass" variant="outline" size="lg">
+              Day Pass {money(fees.dayPass)}
+            </ButtonLink>
+          </div>
+        </Container>
+      </section>
+
+      {/* Plans */}
+      <Section>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <Eyebrow>Memberships</Eyebrow>
+            <H2>Pick your plan</H2>
+          </div>
+          <Link href="/memberships" className="font-semibold text-brick underline underline-offset-4">
+            Compare all plans and fees →
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="mt-4">
+          <PrelaunchNote>Prices shown are sample numbers until final pricing is set.</PrelaunchNote>
         </div>
-      </main>
-    </div>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {plans.map((p) => (
+            <PlanCard key={p.id} plan={p} location="home" />
+          ))}
+        </div>
+      </Section>
+
+      {/* Amenities */}
+      <Section tone="paper">
+        <Eyebrow>Inside the gym</Eyebrow>
+        <H2>Everything you need. Nothing you don&apos;t.</H2>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {amenities.map((a) => (
+            <li key={a.name} className="rounded-md border-l-4 border-brick bg-white p-5">
+              <h3 className="font-condensed text-xl font-semibold uppercase tracking-wide">{a.name}</h3>
+              <p className="mt-1 text-iron">{a.description}</p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* Photos */}
+      {(photos.length > 0 || PRELAUNCH) && (
+        <Section>
+          <Eyebrow>Photos</Eyebrow>
+          <H2>Take a look around</H2>
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">
+            {photos.length > 0
+              ? photos.map((p) => (
+                  <Image
+                    key={p.src}
+                    src={p.src}
+                    alt={p.alt}
+                    width={800}
+                    height={600}
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="aspect-[4/3] w-full rounded-md object-cover"
+                  />
+                ))
+              : Array.from({ length: 6 }, (_, i) => (
+                  <div
+                    key={i}
+                    className="flex aspect-[4/3] items-center justify-center rounded-md border-2 border-dashed border-ink/20 bg-paper text-sm text-concrete"
+                  >
+                    Photo coming soon
+                  </div>
+                ))}
+          </div>
+        </Section>
+      )}
+
+      {/* Testimonials — real reviews only, added in src/config/gym.ts */}
+      {(testimonials.length > 0 || PRELAUNCH) && (
+        <Section tone="paper">
+          <Eyebrow>Members say</Eyebrow>
+          <H2>Reviews</H2>
+          {testimonials.length > 0 ? (
+            <ul className="mt-8 grid gap-6 md:grid-cols-3">
+              {testimonials.map((t) => (
+                <li key={t.quote} className="rounded-md bg-white p-6">
+                  <blockquote className="text-lg text-iron">&ldquo;{t.quote}&rdquo;</blockquote>
+                  <p className="mt-3 font-semibold">
+                    {t.name}
+                    {t.source && <span className="font-normal text-concrete"> · {t.source}</span>}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="mt-6">
+              <PrelaunchNote>Real member reviews go here. Add them in the settings file.</PrelaunchNote>
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* Hours & location */}
+      <Section>
+        <div className="grid gap-10 md:grid-cols-2">
+          <div>
+            <Eyebrow>Visit us</Eyebrow>
+            <H2>Hours &amp; location</H2>
+            <address className="mt-4 not-italic text-lg">
+              {address.street}
+              <br />
+              {address.city}, {address.state} {address.zip}
+            </address>
+            <p className="mt-1">
+              <a href={`tel:${business.phone.replace(/[^0-9+]/g, "")}`} className="font-semibold text-brick">
+                {business.phone}
+              </a>
+            </p>
+            <HoursTable className="mt-6 max-w-sm" />
+            <p className="mt-4 text-sm text-concrete">
+              On-site child care for kids {fees.childCare.minimumAgeMonths} months and up.{" "}
+              <Link href="/child-care" className="text-brick underline">
+                Learn more
+              </Link>
+            </p>
+          </div>
+          <MapEmbed />
+        </div>
+      </Section>
+
+      {/* Final call to action */}
+      <section className="bg-brick text-white">
+        <Container className="flex flex-col items-center gap-5 py-14 text-center">
+          <h2 className="font-display text-3xl sm:text-4xl">Ready to lift?</h2>
+          <p className="max-w-xl text-white/85">
+            Apply online in about five minutes. Nothing is charged online. We&apos;ll contact you to
+            finish signing up.
+          </p>
+          <JoinLink href="/memberships" plan="any" location="home-bottom" variant="dark" size="lg">
+            Join Bricks Gym
+          </JoinLink>
+        </Container>
+      </section>
+    </>
   );
 }
