@@ -6,6 +6,7 @@ import { memberLoginHref, nav } from "@/lib/links";
 
 export function Footer() {
   const { address, social } = business;
+  const loginHref = memberLoginHref();
   const socials = [
     { href: social.instagram, label: "Instagram" },
     { href: social.facebook, label: "Facebook" },
@@ -53,7 +54,7 @@ export function Footer() {
               </li>
             ))}
             <li>
-              <Link href="/day-pass" className="hover:text-bone">
+              <Link href="/memberships#day-pass" className="hover:text-bone">
                 Day Pass
               </Link>
             </li>
@@ -63,11 +64,13 @@ export function Footer() {
         <div>
           <h2 className="stamp text-sm text-bone">Members</h2>
           <ul className="mt-3 space-y-2 text-sm">
-            <li>
-              <a href={memberLoginHref()} className="hover:text-bone">
-                Member Login
-              </a>
-            </li>
+            {loginHref && (
+              <li>
+                <a href={loginHref} rel="noopener" className="hover:text-bone">
+                  Member Login
+                </a>
+              </li>
+            )}
             <li>
               <Link href="/cancel" className="hover:text-bone">
                 Cancel My Membership

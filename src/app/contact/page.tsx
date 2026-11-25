@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { business } from "@/config/gym";
-import { HoursTable } from "@/components/HoursTable";
 import { MapEmbed } from "@/components/MapEmbed";
 import { Eyebrow, H2, PageHero, Section } from "@/components/ui";
 import { ContactForm } from "./ContactForm";
@@ -46,7 +45,6 @@ export default function ContactPage() {
                 )}
               </address>
             </div>
-            <HoursTable />
             <MapEmbed />
           </div>
         </div>

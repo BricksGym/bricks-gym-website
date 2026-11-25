@@ -1,24 +1,22 @@
 import type { MetadataRoute } from "next";
 import { business } from "@/config/gym";
-
-const paths = [
-  "",
-  "/memberships",
-  "/remodel",
-  "/join",
-  "/classes",
-  "/day-pass",
-  "/about",
-  "/faq",
-  "/contact",
-  "/member-login",
-  "/cancel",
-  "/legal/membership-terms",
-  "/legal/privacy",
-  "/legal/waiver",
-];
+import { show } from "@/lib/links";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const paths = [
+    "",
+    "/memberships",
+    "/join",
+    ...(show.remodel ? ["/remodel"] : []),
+    ...(show.classes ? ["/classes"] : []),
+    ...(show.about ? ["/about"] : []),
+    "/faq",
+    "/contact",
+    "/cancel",
+    "/legal/membership-terms",
+    "/legal/privacy",
+    "/legal/waiver",
+  ];
   return paths.map((p) => ({
     url: `${business.siteUrl}${p}`,
     changeFrequency: "monthly",

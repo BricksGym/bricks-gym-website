@@ -19,6 +19,12 @@ Everything lives in **one file: `src/config/gym.ts`**. Open it in any text edito
 - Club Systems links (member portal, app, Join Now pages): section 7. When a Join Now link is filled in, that plan's Join button goes straight to Club Systems instead of the application form.
 - Photos: put image files in `public/images/` and list them in section 8.
 - Reviews: section 8. **Real reviews only.**
+- Remodel tab: section 8b. Set `show: false` when the remodel is finished.
+- **Sections and pages that appear by themselves once they have content** (empty ones stay hidden):
+  - Photos and Reviews on the home page
+  - About tab: write your story in `aboutStory`
+  - Classes tab: add classes, the scheduling widget link, or personal training
+  - Member Login link: add `memberPortalUrl`
 - When every placeholder is filled in, set `PRELAUNCH = false` at the top. That removes the "sample pricing" notices and lets Google index the site.
 
 The membership agreement text is in `src/content/agreement.ts`. It fills in prices from the settings file automatically.

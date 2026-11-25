@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { amenities, business, fees, photos, plans, PRELAUNCH, remodel, testimonials } from "@/config/gym";
+import { amenities, business, fees, photos, plans, remodel, testimonials } from "@/config/gym";
 import { Logo } from "@/components/Logo";
-import { PlanCard } from "@/components/PlanCard";
+import { joinHref } from "@/lib/links";
 import { HoursTable } from "@/components/HoursTable";
 import { MapEmbed } from "@/components/MapEmbed";
 import { JoinLink } from "@/components/JoinLink";
@@ -28,7 +28,7 @@ export default function Home() {
             <JoinLink href="/memberships" plan="any" location="home-hero" size="lg">
               Join Now
             </JoinLink>
-            <ButtonLink href="/day-pass" variant="outline" size="lg">
+            <ButtonLink href="/memberships#day-pass" variant="outline" size="lg">
               Day Pass {money(fees.dayPass)}
             </ButtonLink>
           </div>
@@ -58,24 +58,32 @@ export default function Home() {
         </section>
       )}
 
-      {/* Plans */}
+      {/* Plans (short version; full details on the Memberships page) */}
       <Section>
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <Eyebrow>Memberships</Eyebrow>
-            <H2>Pick your plan</H2>
-          </div>
-          <Link href="/memberships" className="font-semibold text-brick underline underline-offset-4">
-            Compare all plans and fees →
-          </Link>
-        </div>
+        <Eyebrow>Memberships</Eyebrow>
+        <H2>Plans from {money(Math.min(...plans.map((p) => p.monthlyDues)))}/month</H2>
         <div className="mt-4">
           <PrelaunchNote>Prices shown are sample numbers until final pricing is set.</PrelaunchNote>
         </div>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <ul className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
           {plans.map((p) => (
-            <PlanCard key={p.id} plan={p} location="home" />
+            <li key={p.id}>
+              <Link
+                href={joinHref(p.id)}
+                className={`block rounded-md border-2 p-4 text-center transition-colors hover:border-brick ${p.featured ? "border-brick" : "border-ink/15"}`}
+              >
+                <span className="block font-condensed text-sm font-semibold uppercase tracking-wider text-concrete">{p.name}</span>
+                <span className="mt-1 block font-display text-3xl text-brick">{money(p.monthlyDues)}</span>
+                <span className="block text-sm text-concrete">per month</span>
+              </Link>
+            </li>
           ))}
+        </ul>
+        <div className="mt-6 flex flex-wrap items-center gap-4">
+          <ButtonLink href="/memberships">See plans &amp; join</ButtonLink>
+          <Link href="/memberships#day-pass" className="font-semibold text-brick underline underline-offset-4">
+            Just visiting? Day pass {money(fees.dayPass)}
+          </Link>
         </div>
       </Section>
 
@@ -96,58 +104,43 @@ export default function Home() {
         </ul>
       </Section>
 
-      {/* Photos */}
-      {(photos.length > 0 || PRELAUNCH) && (
+      {/* Photos: shown once photos are added in src/config/gym.ts */}
+      {photos.length > 0 && (
         <Section>
           <Eyebrow>Photos</Eyebrow>
           <H2>Take a look around</H2>
           <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">
-            {photos.length > 0
-              ? photos.map((p) => (
-                  <Image
-                    key={p.src}
-                    src={p.src}
-                    alt={p.alt}
-                    width={800}
-                    height={600}
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                    className="aspect-[4/3] w-full rounded-md object-cover"
-                  />
-                ))
-              : Array.from({ length: 6 }, (_, i) => (
-                  <div
-                    key={i}
-                    className="flex aspect-[4/3] items-center justify-center rounded-md border-2 border-dashed border-ink/20 bg-paper text-sm text-concrete"
-                  >
-                    Photo coming soon
-                  </div>
-                ))}
+            {photos.map((p) => (
+              <Image
+                key={p.src}
+                src={p.src}
+                alt={p.alt}
+                width={800}
+                height={600}
+                sizes="(max-width: 768px) 50vw, 33vw"
+                className="aspect-[4/3] w-full rounded-md object-cover"
+              />
+            ))}
           </div>
         </Section>
       )}
 
-      {/* Testimonials — real reviews only, added in src/config/gym.ts */}
-      {(testimonials.length > 0 || PRELAUNCH) && (
+      {/* Reviews: real reviews only, shown once added in src/config/gym.ts */}
+      {testimonials.length > 0 && (
         <Section tone="paper">
           <Eyebrow>Members say</Eyebrow>
           <H2>Reviews</H2>
-          {testimonials.length > 0 ? (
-            <ul className="mt-8 grid gap-6 md:grid-cols-3">
-              {testimonials.map((t) => (
-                <li key={t.quote} className="rounded-md bg-white p-6">
-                  <blockquote className="text-lg text-iron">&ldquo;{t.quote}&rdquo;</blockquote>
-                  <p className="mt-3 font-semibold">
-                    {t.name}
-                    {t.source && <span className="font-normal text-concrete"> · {t.source}</span>}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="mt-6">
-              <PrelaunchNote>Real member reviews go here. Add them in the settings file.</PrelaunchNote>
-            </div>
-          )}
+          <ul className="mt-8 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t) => (
+              <li key={t.quote} className="rounded-md bg-white p-6">
+                <blockquote className="text-lg text-iron">&ldquo;{t.quote}&rdquo;</blockquote>
+                <p className="mt-3 font-semibold">
+                  {t.name}
+                  {t.source && <span className="font-normal text-concrete"> · {t.source}</span>}
+                </p>
+              </li>
+            ))}
+          </ul>
         </Section>
       )}
 

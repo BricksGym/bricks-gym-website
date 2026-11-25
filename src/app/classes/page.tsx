@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { show } from "@/lib/links";
 import { amenities, classes, clubSystems, personalTraining } from "@/config/gym";
 import { ComingSoon, Eyebrow, H2, PageHero, PrelaunchNote, Section } from "@/components/ui";
 
@@ -8,7 +10,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/classes" },
 };
 
+/** Shown only once there are classes, a scheduling widget or personal training in src/config/gym.ts. */
 export default function ClassesPage() {
+  if (!show.classes) notFound();
   return (
     <>
       <PageHero eyebrow="Classes & Amenities" title="What's inside" />

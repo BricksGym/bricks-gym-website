@@ -7,11 +7,11 @@ import { nav, isExternal } from "@/lib/links";
 import { buttonClass } from "@/components/ui";
 import { track } from "@/lib/analytics";
 
-export function Header({ logo, memberLoginHref }: { logo: ReactNode; memberLoginHref: string }) {
+export function Header({ logo, memberLoginHref }: { logo: ReactNode; memberLoginHref: string | null }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const close = () => setOpen(false);
-  const loginProps = isExternal(memberLoginHref) ? { rel: "noopener" } : {};
+  const loginProps = memberLoginHref && isExternal(memberLoginHref) ? { rel: "noopener" } : {};
 
   return (
     <header className="sticky top-0 z-40 border-b-4 border-brick bg-white">
@@ -43,14 +43,16 @@ export function Header({ logo, memberLoginHref }: { logo: ReactNode; memberLogin
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href={memberLoginHref}
-            {...loginProps}
-            onClick={() => track("Member Login Click")}
-            className="hidden font-condensed text-sm font-semibold uppercase tracking-wider text-ink underline decoration-brick decoration-2 underline-offset-4 hover:text-brick sm:inline"
-          >
-            Member Login
-          </a>
+          {memberLoginHref && (
+            <a
+              href={memberLoginHref}
+              {...loginProps}
+              onClick={() => track("Member Login Click")}
+              className="hidden font-condensed text-sm font-semibold uppercase tracking-wider text-ink underline decoration-brick decoration-2 underline-offset-4 hover:text-brick sm:inline"
+            >
+              Member Login
+            </a>
+          )}
           <Link
             href="/memberships"
             onClick={() => {
@@ -90,11 +92,13 @@ export function Header({ logo, memberLoginHref }: { logo: ReactNode; memberLogin
                 </Link>
               </li>
             ))}
-            <li>
-              <a href={memberLoginHref} {...loginProps} onClick={close} className="block py-3 text-brick">
-                Member Login →
-              </a>
-            </li>
+            {memberLoginHref && (
+              <li>
+                <a href={memberLoginHref} {...loginProps} onClick={close} className="block py-3 text-brick">
+                  Member Login →
+                </a>
+              </li>
+            )}
           </ul>
         </nav>
       )}

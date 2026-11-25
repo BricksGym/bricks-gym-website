@@ -72,7 +72,7 @@ function faqs(): Faq[] {
     {
       q: "Can I just come in for a day?",
       a: `Yes. Day passes are ${money(fees.dayPass)}.`,
-      link: { href: "/day-pass", label: "Day pass" },
+      link: { href: "/memberships#day-pass", label: "Day pass" },
     },
     {
       q: "Is my information safe?",

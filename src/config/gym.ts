@@ -315,6 +315,12 @@ export const remodel = {
 /** Classes: add one line per class. Empty = "schedule coming soon". */
 export const classes: { name: string; when: string; description: string }[] = [];
 
+/**
+ * About page: your own story, one paragraph per line in quotes.
+ * Empty = the About page and its menu tab are hidden.
+ */
+export const aboutStory: string[] = [];
+
 /** Personal training. Empty description = section hidden. */
 export const personalTraining = {
   description: "", // PLACEHOLDER e.g. "One-on-one coaching. Ask at the front desk."
