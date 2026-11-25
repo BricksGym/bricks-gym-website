@@ -53,7 +53,7 @@ export const business = {
   /** Mailing address for written notices (cancellations, etc.). */
   noticeAddress: "Bricks Gym, Attn: Owner, 1810 Main Street, Watsonville, CA 95076",
   /** Website address once you buy a domain, no trailing slash. */
-  siteUrl: "https://bricksgym.example", // PLACEHOLDER (no domain yet)
+  siteUrl: "https://thebricksgym.com", // chosen domain — must be purchased and connected in Vercel
   social: {
     instagram: "", // PLACEHOLDER e.g. "https://instagram.com/bricksgym"
     facebook: "", // PLACEHOLDER

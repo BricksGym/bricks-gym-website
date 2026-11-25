@@ -8,7 +8,7 @@ Send these to Club Systems (office@healthclubsystems.com, 800-227-6194) after yo
 
 ## Agreement template
 
-- [ ] Load the new agreement word for word from `https://YOUR-DOMAIN/legal/membership-terms.txt`.
+- [ ] Load the new agreement word for word from `https://thebricksgym.com/legal/membership-terms.txt`.
 - [ ] Plans: Month-to-month, **6**, 12 and 24 months. **Remove 18-month** everywhere, including its $249 fee.
 - [ ] Add the 6-month early cancellation fee; keep 12-month ($199 or remaining dues, whichever is less) and 24-month ($299).
 - [ ] Replace the 24-hour right to cancel with the **5-business-day** notice, in bold, near the signature line.
@@ -18,7 +18,7 @@ Send these to Club Systems (office@healthclubsystems.com, 800-227-6194) after yo
 
 ## Notices (California Automatic Renewal Law)
 
-- [ ] Send an acknowledgment email after signup that explains the auto-renewal terms and how to cancel (including online at `YOUR-DOMAIN/cancel`).
+- [ ] Send an acknowledgment email after signup that explains the auto-renewal terms and how to cancel (including online at `thebricksgym.com/cancel`).
 - [ ] Send a yearly reminder of the membership terms.
 - [ ] Send price-change notices 7–30 days in advance.
 - [ ] Ask: can members cancel online in the Member Portal? If so, send us the link and we'll add it to the site.

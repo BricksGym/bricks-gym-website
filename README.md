@@ -28,7 +28,7 @@ The membership agreement text is in `src/content/agreement.ts`. It fills in pric
 The website's Membership Terms page and the agreement in Club Systems must match word for word.
 
 1. Edit `src/content/agreement.ts` (after your lawyer's review).
-2. Open `https://YOUR-DOMAIN/legal/membership-terms.txt`, copy everything, and send it to Club Systems to load as the agreement template.
+2. Open `https://thebricksgym.com/legal/membership-terms.txt`, copy everything, and send it to Club Systems to load as the agreement template.
 
 ## Run it on this computer
 
