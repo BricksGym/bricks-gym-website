@@ -29,14 +29,6 @@
  */
 export const PRELAUNCH = false;
 
-function siteAddress(): string {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
-  if (explicit) return explicit.replace(/\/$/, "");
-  const vercel =
-    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL;
-  return vercel ? `https://${vercel}` : "https://thebricksgym.com";
-}
-
 // ---------------------------------------------------------------------------
 // 2. BUSINESS DETAILS
 // ---------------------------------------------------------------------------
@@ -63,12 +55,8 @@ export const business = {
   inboxEmail: "831bodyzone@gmail.com",
   /** Mailing address for written notices (cancellations, etc.). */
   noticeAddress: "Bricks Gym, Attn: Owner, 1810 Main Street, Watsonville, CA 95076",
-  /**
-   * Website address, no trailing slash. On Vercel this follows the site's real
-   * main address automatically (the vercel.app address until thebricksgym.com
-   * is connected, then thebricksgym.com after the next deploy).
-   */
-  siteUrl: siteAddress(),
+  /** Website's main address, no trailing slash (the one Vercel lists as primary). */
+  siteUrl: "https://www.thebricksgym.com",
   social: {
     instagram: "", // PLACEHOLDER e.g. "https://instagram.com/bricksgym"
     facebook: "", // PLACEHOLDER

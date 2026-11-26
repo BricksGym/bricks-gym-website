@@ -54,7 +54,7 @@ Other commands: `npm test` (price math checks), `npm run build` (full production
    - **Resend** (resend.com): an API key and a "from" address on your verified domain. Without these, forms won't send in production.
    - **Cloudflare Turnstile** (free): spam protection for the forms.
    - **Plausible** (optional, paid): privacy-friendly visitor stats, including "Join" clicks.
-4. Buy the domain and connect it in Vercel → Project → Settings → Domains. Then **redeploy** (Deployments → ⋯ → Redeploy) so the site's links, sitemap and emails switch to the new address. No code change needed.
+4. Buy the domain and connect it in Vercel → Project → Settings → Domains. If the main address ever changes, update `siteUrl` in `src/config/gym.ts`. (Now: https://www.thebricksgym.com, bought through Vercel.)
 
 ## Before launch: test checklist
 
