@@ -14,8 +14,8 @@
  *  Text in **double asterisks** is shown in bold.
  * ============================================================================
  */
-import { afterTerm, business, fees, plans, rules } from "@/config/gym";
-import { earlyCancellationText, money, plansWithoutAnnualFee } from "@/lib/pricing";
+import { additionalMember, afterTerm, business, fees, plans, rules } from "@/config/gym";
+import { earlyCancellationText, formatMoney, hasEnrollmentDeal, money, plansWithoutAnnualFee, quote } from "@/lib/pricing";
 import { ordinal } from "@/lib/fee-list";
 
 export const AGREEMENT_VERSION = "DRAFT 2026-11-25";
@@ -45,6 +45,30 @@ export function agreementSections(): AgreementSection[] {
         `This Membership Agreement is between ${business.legalName}, doing business as ${gym}, ${business.address.street}, ${business.address.city}, ${business.address.state} ${business.address.zip} ("the Gym", "we"), and the member(s) named on the membership record ("you").`,
         "The **Primary member** is the person who signs this agreement. The Primary member is financially responsible for all additional members on the membership.",
         "The membership record lists: membership number, Primary member number, each member's name, birthdate, mailing address, phone numbers, email, driver's license number (a parent or guardian's if the member is a minor), the plan and term, the enrollment fee, first and last month's dues, total paid at signing, and the payment schedule (number of payments, monthly amount and first payment date).",
+      ],
+    },
+
+    {
+      id: "plans",
+      title: "Plans and prices",
+      body: [
+        "Your plan is shown on the membership record. The costs for each plan are:",
+        ...plans.map((p) => {
+          const q = quote(p.id);
+          const enrollment = hasEnrollmentDeal(p)
+            ? `${money(p.enrollmentFee)} (normally ${money(p.regularEnrollmentFee)})`
+            : money(p.enrollmentFee);
+          const signup = q.dueTodayLines
+            .filter((l) => l.cents > 0)
+            .map((l) => l.label.replace(/ \(.*\)$/, "").toLowerCase())
+            .join(" + ");
+          const annual = p.annualFee
+            ? `${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} each ${f.annualClubImprovement.month}`
+            : "none";
+          return `- **${p.name}**${p.badge ? ` (${p.badge})` : ""}${p.termMonths ? "" : " (no minimum term)"}: ${money(p.monthlyDues)} a month. Enrollment fee: ${enrollment}. Due at signing: ${formatMoney(q.dueTodayCents)} (${signup}). Club Improvement fee: ${annual}. Early cancellation fee: ${earlyCancellationText(p).toLowerCase() === "none" ? "none" : earlyCancellationText(p)}.`;
+        }),
+        `Each additional member on the same membership adds ${plans.map((p) => `${money(additionalMember.monthlyDues[p.id])} a month on ${p.name}`).join(", ")}${additionalMember.enrollmentFee > 0 ? `, plus a ${money(additionalMember.enrollmentFee)} enrollment fee` : ", with no enrollment fee"}.`,
+        "Other fees, such as freezes, returned payments and late charges, are described below.",
       ],
     },
 

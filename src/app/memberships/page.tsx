@@ -28,6 +28,13 @@ export default function MembershipsPage() {
             <PlanCard key={p.id} plan={p} location="memberships" />
           ))}
         </div>
+        <p className="mt-8 text-sm text-iron">
+          Every plan&apos;s full costs, including the yearly Club Improvement fee and early cancellation fees, are in our{" "}
+          <Link href="/legal/membership-terms#sec-plans" className="font-semibold text-brick underline">
+            Membership Terms
+          </Link>
+          .
+        </p>
       </Section>
 
       <Section tone="paper">
