@@ -44,6 +44,7 @@ describe("quote", () => {
   it("month-to-month has no annual fee; 24-month has no enrollment fee", () => {
     expect(quote("month-to-month").annualFeeCents).toBe(0);
     expect(quote("month-to-month").annualFeeText).toBe("None on this plan");
+    expect(quote("12-month").annualFeeText).toBe("$59.99 a year");
     const q24 = quote("24-month");
     expect(q24.enrollmentCents).toBe(0);
     expect(q24.dueTodayCents).toBe(toCents(29.99));

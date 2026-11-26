@@ -18,7 +18,7 @@ The public website for Bricks Gym, 1810 Main Street, Watsonville, CA.
 
 Everything lives in **one file: `src/config/gym.ts`**. Open it in any text editor, change the numbers or text, and save. Search it for `PLACEHOLDER` to find everything still to fill in.
 
-- Prices and fees: sections 4 and 5.
+- Prices and fees: sections 4 and 5. Annual fee billing months and auto-draft days: section 5b.
 - Hours: section 3. Update both the readable list and the "Google format" list below it.
 - Club Systems links (member portal, app, Join Now pages): section 7. When a Join Now link is filled in, that plan's Join button goes straight to Club Systems instead of the application form.
 - Photos: put image files in `public/images/` and list them in section 8.

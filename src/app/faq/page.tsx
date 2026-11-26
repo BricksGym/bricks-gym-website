@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { afterTerm, business, clubSystems, extraFaqs, fees, plans, remodel, rules } from "@/config/gym";
+import { afterTerm, billing, business, clubSystems, extraFaqs, fees, plans, remodel, rules } from "@/config/gym";
 import { PageHero, Section } from "@/components/ui";
 import { money, plansWithoutAnnualFee } from "@/lib/pricing";
 import { cancelEmailHref } from "@/lib/links";
@@ -107,7 +107,11 @@ function faqs(): Faq[] {
     },
     {
       q: "What is the annual fee?",
-      a: `A yearly fee of ${money(fees.annualClubImprovement.amount)}${fees.annualClubImprovement.perMember ? " per member" : ""}, billed each ${fees.annualClubImprovement.month}. The Primary member pays it for everyone on the membership.${plansWithoutAnnualFee() ? ` ${plansWithoutAnnualFee()} memberships don't pay it.` : ""}`,
+      a: `A yearly fee of ${money(fees.annualClubImprovement.amount)}${fees.annualClubImprovement.perMember ? " per member" : ""}. The month it's billed is based on the date you sign up, and it's shown on your membership summary. The Primary member pays it for everyone on the membership.${plansWithoutAnnualFee() ? ` ${plansWithoutAnnualFee()} memberships don't pay it.` : ""}`,
+    },
+    {
+      q: "When are my monthly dues drafted?",
+      a: `Automatically each month, on a day based on when you sign up. Sign up between the ${billing.midMonth.fromDay}th and the ${billing.midMonth.toDay}nd and your dues are drafted on the ${billing.midMonth.draftDay}th of each month. Sign up between the 23rd and the 7th and they're drafted on the last day of each month. Your first draft date is shown when you sign up.`,
     },
     {
       q: "Can I just come in for a day?",

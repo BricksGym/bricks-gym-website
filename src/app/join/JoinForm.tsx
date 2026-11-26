@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { additionalMember, afterTerm, business, onlineApplication, plans, rules, type PlanId } from "@/config/gym";
 import { AgreementText } from "@/components/AgreementText";
 import { initialedSections } from "@/content/agreement";
+import { annualFeeMonth, autoDraft, formatYmd, gymToday } from "@/lib/billing";
 import {
   applicationSchema,
   familyMemberSchema,
@@ -84,6 +85,8 @@ export function JoinForm() {
   const labels: Record<Step, string> = { plan: "Plan", you: "Your info", family: "Family", sign: "Agreement" };
   const q = quote(plan, family.length);
   const hasMinor = family.some((m) => ageStatus(m.birthdate).kind === "minor");
+  const today = gymToday();
+  const draft = autoDraft(today);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -412,7 +415,14 @@ export function JoinForm() {
                   <Row label="Last month's dues" value={q.plan.lastMonthDueAtSignup ? formatMoney(q.lastMonthCents) : "Not required"} />
                   <Row label="Total due at signing" value={formatMoney(q.dueTodayCents)} strong />
                   <Row label="Monthly amount" value={formatMoney(q.monthlyCents)} />
-                  <Row label="Annual fee" value={q.annualFeeText} />
+                  <Row
+                    label="Monthly auto-draft"
+                    value={`${draft.dayLabel.replace(/^the /, "The ")}, starting ${formatYmd(draft.first)}`}
+                  />
+                  <Row
+                    label="Annual fee"
+                    value={q.plan.annualFee ? `${q.annualFeeText}, billed each ${annualFeeMonth(today)} (based on your sign-up date)` : "None"}
+                  />
                   <Row label="Cancellation fee" value={q.plan.termMonths ? `${q.earlyCancellation} (before the term ends)` : "None"} />
                 </dl>
                 <div className="border-t border-ink/10 px-4 py-3 text-sm">

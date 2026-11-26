@@ -77,8 +77,7 @@ export type Quote = {
   termDuesTotalCents: number | null;
   /** 0 when the plan has no annual fee. */
   annualFeeCents: number;
-  annualFeeMonth: string;
-  /** "$59.99 each March" or "None on this plan". */
+  /** "$59.99 a year" or "None on this plan". The billing month depends on the sign-up date (lib/billing.ts). */
   annualFeeText: string;
   earlyCancellation: string;
 };
@@ -126,7 +125,7 @@ export function quote(planId: PlanId, additionalMembers = 0): Quote {
     ? toCents(annual.amount) * (annual.perMember ? memberCount : 1)
     : 0;
   const annualFeeText = plan.annualFee
-    ? `${formatMoney(annualFeeCents)} each ${annual.month}`
+    ? `${formatMoney(annualFeeCents)} a year`
     : "None on this plan";
 
   return {
@@ -142,7 +141,6 @@ export function quote(planId: PlanId, additionalMembers = 0): Quote {
     remainingPayments,
     termDuesTotalCents,
     annualFeeCents,
-    annualFeeMonth: annual.month,
     annualFeeText,
     earlyCancellation: earlyCancellationText(plan),
   };

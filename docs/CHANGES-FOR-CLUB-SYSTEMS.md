@@ -16,7 +16,8 @@ Send these to Club Systems (office@healthclubsystems.com, 800-227-6194) after yo
   - 6-month: $44.99/month, $49.99 enrollment
   - 12-month: $34.99/month, $49.99 enrollment
   - 24-month **Founding member offer**: $29.99/month, **$0 enrollment** (normally $49.99)
-  - Annual fee (formerly "Club Improvement fee"): $59.99 each March on the 6, 12 and 24-month plans
+  - Annual fee (formerly "Club Improvement fee"): $59.99 a year on the 6, 12 and 24-month plans, billed by sign-up month: January–March sign-ups in June, April–August in November, September–December in March
+  - Monthly auto-draft: sign-ups on the 8th–22nd drafted on the 14th of each month (starting next month); sign-ups on the 23rd–7th drafted on the last day of each month
 - [ ] Add the 6-month early cancellation fee; keep 12-month ($199 or remaining dues, whichever is less) and 24-month ($299).
 - [ ] Replace the 24-hour right to cancel with the **5-business-day** notice, in bold, near the signature line.
 - [ ] Add a **separate, unchecked auto-renewal consent** (checkbox or initials), and store proof of it.

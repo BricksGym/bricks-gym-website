@@ -5,6 +5,7 @@ import { AGREEMENT_VERSION, agreementPlainText, initialedSections } from "@/cont
 import { applicationSchema, issuesToErrors, type Application } from "@/lib/application-schema";
 import { ageOn, ageStatus } from "@/lib/age";
 import { formatMoney, hasEnrollmentDeal, money, quote, type Quote } from "@/lib/pricing";
+import { annualFeeMonth, autoDraft, formatYmd, gymToday } from "@/lib/billing";
 import { emailLayout, escapeHtml, rowsTable, rowsText, sendEmail } from "@/lib/server/email";
 import { clientIp, formatTimestamp, rateLimited, referenceId, verifyTurnstile } from "@/lib/server/guard";
 
@@ -69,6 +70,8 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
 
 /** The costs, laid out like the "Membership summary" on the paper agreement. */
 function summaryRows(app: Application, q: Quote): Rows {
+  const today = gymToday();
+  const draft = autoDraft(today);
   return [
     ["Membership type", `${q.plan.name}${app.family.length ? ` + ${app.family.length} additional` : ""}`],
     ["Initial number of months", q.plan.termMonths ? String(q.plan.termMonths) : "Month-to-month"],
@@ -82,7 +85,8 @@ function summaryRows(app: Application, q: Quote): Rows {
     ["Last month's dues", q.plan.lastMonthDueAtSignup ? formatMoney(q.lastMonthCents) : "Not required"],
     ["Total due at signing", formatMoney(q.dueTodayCents)],
     ["Monthly amount", formatMoney(q.monthlyCents)],
-    ["Annual fee", q.annualFeeText],
+    ["Monthly auto-draft", `${draft.dayLabel.replace(/^the /, "The ")}, starting ${formatYmd(draft.first)}`],
+    ["Annual fee", q.plan.annualFee ? `${q.annualFeeText}, billed each ${annualFeeMonth(today)} (based on sign-up date)` : "None"],
     ["Cancellation fee", q.plan.termMonths ? `${q.earlyCancellation} (before the term ends)` : "None"],
   ];
 }
@@ -106,7 +110,7 @@ function setupEmail(app: Application, reference: string, signedAt: string) {
     ...summaryRows(app, q),
     ["Payment schedule: initial # of payments", q.remainingPayments === null ? "Ongoing (month-to-month)" : String(q.remainingPayments)],
     ["Payment schedule: monthly amount", formatMoney(q.monthlyCents)],
-    ["Payment schedule: first payment due", "1 month after the first charge"],
+    ["Payment schedule: first auto-draft", formatYmd(autoDraft(gymToday()).first)],
   ];
 
   const primary: Rows = [

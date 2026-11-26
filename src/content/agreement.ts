@@ -14,7 +14,7 @@
  *  Text in **double asterisks** is shown in bold.
  * ============================================================================
  */
-import { additionalMember, afterTerm, business, fees, plans, rules } from "@/config/gym";
+import { additionalMember, afterTerm, billing, business, fees, plans, rules } from "@/config/gym";
 import { earlyCancellationText, formatMoney, hasEnrollmentDeal, money, plansWithoutAnnualFee, quote } from "@/lib/pricing";
 import { ordinal } from "@/lib/fee-list";
 
@@ -63,7 +63,7 @@ export function agreementSections(): AgreementSection[] {
             .map((l) => l.label.replace(/ \(.*\)$/, "").toLowerCase())
             .join(" + ");
           const annual = p.annualFee
-            ? `${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} each ${f.annualClubImprovement.month}`
+            ? `${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} a year`
             : "none";
           return `- **${p.name}**${p.badge ? ` (${p.badge})` : ""}${p.termMonths ? "" : " (no minimum term)"}: ${money(p.monthlyDues)} a month. Enrollment fee: ${enrollment}. Due at signing: ${formatMoney(q.dueTodayCents)} (${signup}). Annual fee: ${annual}. Cancellation fee (before the term ends): ${earlyCancellationText(p).toLowerCase() === "none" ? "none" : earlyCancellationText(p)}.`;
         }),
@@ -109,7 +109,7 @@ export function agreementSections(): AgreementSection[] {
       title: "4. Annual fee",
       initial: true,
       body: [
-        `An annual fee of ${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} is charged once a year, in ${f.annualClubImprovement.month}. The Primary member pays this fee for all additional members.${plansWithoutAnnualFee() ? ` This fee is not charged on ${plansWithoutAnnualFee()} memberships.` : ""}`,
+        `An annual fee of ${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} is charged once a year. The month it is billed is based on the month you sign up: ${billing.annualFeeMonthBySignupMonth.map((r) => `${monthRange(r.signupMonths)}, billed each ${r.billedIn}`).join("; ")}. Your billing month is shown on your membership record. The Primary member pays this fee for all additional members.${plansWithoutAnnualFee() ? ` This fee is not charged on ${plansWithoutAnnualFee()} memberships.` : ""}`,
       ],
     },
     {
@@ -126,6 +126,7 @@ export function agreementSections(): AgreementSection[] {
       initial: true,
       body: [
         "You authorize the Gym, through its billing provider (Club Systems), to charge your monthly dues, the annual fee and any other fees you agree to, to the card or bank account you provide, until you cancel as described in this agreement.",
+        `**Draft dates:** monthly dues are drafted on a day based on the date you sign up. If you sign up between the ${billing.midMonth.fromDay}th and the ${billing.midMonth.toDay}nd of a month, dues are drafted on the ${billing.midMonth.draftDay}th of each month, starting the following month. If you sign up between the 23rd and the 7th, dues are drafted on the last day of each month, starting at the end of the following month if you sign up on the 23rd or later, or at the end of the same month if you sign up between the 1st and the 7th. Your first draft date is shown on your membership record.`,
         `A fee of ${money(f.returnedPayment)} applies to each returned or failed payment.`,
         "**Automatic renewal:** your membership renews automatically each month after the initial term (or each month, for month-to-month) and will be charged at the same monthly rate until you cancel. **You can cancel at any time** in person at the front desk, by email (a ready-to-send cancellation email is linked on our website) or by mail (see Condition {{c-termination}}).",
         "Your consent to automatic renewal is given separately, by a checkbox or initials, and is not pre-checked.",
@@ -359,4 +360,12 @@ export function agreementPlainText(opts: { initials?: string } = {}): string {
     out.push("");
   }
   return out.join("\n");
+}
+
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+/** [1, 2, 3] -> "sign up January–March" */
+function monthRange(months: number[]): string {
+  const first = MONTH_NAMES[months[0] - 1];
+  const last = MONTH_NAMES[months[months.length - 1] - 1];
+  return months.length > 1 ? `sign up ${first}–${last}` : `sign up in ${first}`;
 }

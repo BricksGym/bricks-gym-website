@@ -208,10 +208,10 @@ export const fees = {
   /**
    * Annual fee, paid by the Primary. Charged only on plans
    * with annualFee: true in section 4 (not month-to-month).
+   * The month it's billed depends on the sign-up date (section 5b).
    */
   annualClubImprovement: {
     amount: 59.99, // subject to change
-    month: "March",
     perMember: true, // PLACEHOLDER (confirm: charged for each family member too?)
   },
   dayPass: 15,
@@ -232,6 +232,24 @@ export const fees = {
     pastDueSinglePlan: 100,
     pastDueMultiplePlan: 150,
   },
+};
+
+// ---------------------------------------------------------------------------
+// 5b. BILLING DATES (based on the day the member signs up)
+// ---------------------------------------------------------------------------
+export const billing = {
+  /** Annual fee billing month, by the month the member signs up (1 = January). */
+  annualFeeMonthBySignupMonth: [
+    { signupMonths: [1, 2, 3], billedIn: "June" },
+    { signupMonths: [4, 5, 6, 7, 8], billedIn: "November" },
+    { signupMonths: [9, 10, 11, 12], billedIn: "March" },
+  ],
+  /**
+   * Monthly auto-draft day. Sign up between fromDay and toDay: drafted on
+   * draftDay of each month, starting next month. Sign up any other day
+   * (the 23rd through the 7th): drafted on the last day of each month.
+   */
+  midMonth: { fromDay: 8, toDay: 22, draftDay: 14 },
 };
 
 // ---------------------------------------------------------------------------
