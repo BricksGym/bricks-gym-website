@@ -106,7 +106,7 @@ export type Plan = {
   monthlyDues: number;
   /** Is the last month's dues collected at signup? */
   lastMonthDueAtSignup: boolean;
-  /** Is the yearly Club Improvement fee (section 5) charged on this plan? */
+  /** Is the annual fee (section 5) charged on this plan? */
   annualFee: boolean;
   /** Fee to end the contract before the term is over. null = none. */
   earlyCancellation: null | {
@@ -206,7 +206,7 @@ export const afterTerm = {
 // ---------------------------------------------------------------------------
 export const fees = {
   /**
-   * Yearly "Club Improvement" fee, paid by the Primary. Charged only on plans
+   * Annual fee, paid by the Primary. Charged only on plans
    * with annualFee: true in section 4 (not month-to-month).
    */
   annualClubImprovement: {
@@ -261,10 +261,9 @@ export const rules = {
 export const onlineApplication = {
   responseTime: "within 1 business day",
   nextSteps: [
-    "We review your application and set up your membership in our member system.",
-    "We contact you to schedule a quick visit to the front desk (bring a photo ID).",
-    "You read and sign your membership agreement and set up payment securely with us. Nothing is charged until then.",
-    "You get your member number and can start training.",
+    "We enter your membership into our member system, usually within 1 business day.",
+    "We call you to set up your payment card over the phone. We never take card numbers online or by email.",
+    "Come in with a photo ID, check in at the front desk and start training.",
   ],
 };
 

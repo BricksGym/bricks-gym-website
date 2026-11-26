@@ -34,3 +34,10 @@ Not legal advice. These items need a California attorney's review before launch.
 ## Accessibility
 
 20. Our pages are built to WCAG 2.1 AA. Ask Club Systems whether their join and portal pages are accessible too.
+
+## Online sign-up and electronic signature (added 2026-11-25)
+
+- **Electronic signature.** Members now sign the agreement online: they scroll through the full agreement, type their initials once and check a box for each section that needs initials, agree to automatic renewal with a separate checkbox, then type their full name and check an electronic-signature box. The gym records the date, time, IP address and agreement version, and a signed copy is emailed to the member right away. Confirm this meets California's e-signature law (UETA, Civil Code 1633.1 and following) and the health studio contract rules (Civil Code 1812.80 and following), including giving the buyer a copy.
+- **Payment by phone.** The website never collects card or bank numbers. Staff call the member and type the card directly into Club Systems. Confirm the agreement's payment authorization covers a card given by phone after signing.
+- **Parent or guardian.** For members under 18, the Primary member checks a box confirming they are the parent or guardian and signs for them. Confirm this is enough, or whether a separate guardian signature is needed.
+

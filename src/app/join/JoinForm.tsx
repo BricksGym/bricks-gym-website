@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { additionalMember, afterTerm, business, onlineApplication, plans, rules, type PlanId } from "@/config/gym";
+import { AgreementText } from "@/components/AgreementText";
+import { initialedSections } from "@/content/agreement";
 import {
   applicationSchema,
   familyMemberSchema,
@@ -13,9 +14,9 @@ import {
   type PrimaryInput,
 } from "@/lib/application-schema";
 import { ageStatus } from "@/lib/age";
-import { formatMoney, isPlanId, money, quote, termLabel } from "@/lib/pricing";
+import { formatMoney, hasEnrollmentDeal, isPlanId, money, quote, termLabel } from "@/lib/pricing";
 import { track } from "@/lib/analytics";
-import { buttonClass, PrelaunchNote } from "@/components/ui";
+import { buttonClass, PrelaunchNote, Prose } from "@/components/ui";
 import { Checkbox, FormAlert, Honeypot, TextArea, TextField, Turnstile } from "@/components/form";
 import { submitApplication } from "./actions";
 
@@ -49,7 +50,9 @@ const emptyMember = (): FamilyInput => ({
   dlState: "CA",
 });
 
-type Step = "plan" | "you" | "family" | "review";
+type Step = "plan" | "you" | "family" | "sign";
+
+const SECTIONS = initialedSections();
 
 export function JoinForm() {
   const params = useSearchParams();
@@ -60,7 +63,12 @@ export function JoinForm() {
   const [primary, setPrimary] = useState<PrimaryInput>(emptyPrimary);
   const [family, setFamily] = useState<FamilyInput[]>([]);
   const [notes, setNotes] = useState("");
-  const [agree, setAgree] = useState({ terms: false, autoRenew: false, guardian: false, contact: false });
+  const [agree, setAgree] = useState({ read: false, autoRenew: false, guardian: false, contact: false, eSign: false });
+  const [initials, setInitials] = useState("");
+  const [initialed, setInitialed] = useState<string[]>([]);
+  const [signatureName, setSignatureName] = useState("");
+  const [scrolledToEnd, setScrolledToEnd] = useState(false);
+  const agreementBox = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [company, setCompany] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -71,9 +79,9 @@ export function JoinForm() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
 
-  const steps: Step[] = family.length > 0 ? ["plan", "you", "family", "review"] : ["plan", "you", "review"];
+  const steps: Step[] = family.length > 0 ? ["plan", "you", "family", "sign"] : ["plan", "you", "sign"];
   const stepIndex = steps.indexOf(step);
-  const labels: Record<Step, string> = { plan: "Plan", you: "Your info", family: "Family", review: "Review" };
+  const labels: Record<Step, string> = { plan: "Plan", you: "Your info", family: "Family", sign: "Agreement" };
   const q = quote(plan, family.length);
   const hasMinor = family.some((m) => ageStatus(m.birthdate).kind === "minor");
 
@@ -85,6 +93,19 @@ export function JoinForm() {
     headingRef.current?.focus();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step, done]);
+
+  // The "I have read" box unlocks once the agreement has been scrolled to the end.
+  useEffect(() => {
+    if (step !== "sign") return;
+    const el = agreementBox.current;
+    if (el && el.scrollHeight <= el.clientHeight + 8) setScrolledToEnd(true);
+  }, [step]);
+  const onAgreementScroll = () => {
+    const el = agreementBox.current;
+    if (el && el.scrollTop + el.clientHeight >= el.scrollHeight - 24) setScrolledToEnd(true);
+  };
+  const toggleInitial = (id: string, on: boolean) =>
+    setInitialed((list) => (on ? [...new Set([...list, id])] : list.filter((x) => x !== id)));
 
   const setFamilyCount = (n: number) => {
     setFamily((f) => (n > f.length ? [...f, ...Array.from({ length: n - f.length }, emptyMember)] : f.slice(0, n)));
@@ -132,10 +153,14 @@ export function JoinForm() {
       primary,
       family,
       notes,
-      agreeTermsReviewed: agree.terms,
+      agreeTermsRead: agree.read,
+      initials,
+      initialedSections: initialed,
       agreeAutoRenew: agree.autoRenew,
       agreeGuardian: agree.guardian,
       agreeContact: agree.contact,
+      signatureName,
+      agreeESign: agree.eSign,
       turnstileToken: turnstileToken || undefined,
       company,
     };
@@ -169,13 +194,13 @@ export function JoinForm() {
     return (
       <div className="mx-auto max-w-2xl text-center">
         <h2 ref={headingRef} tabIndex={-1} className="font-display text-3xl text-ink focus:outline-none">
-          Application received!
+          You&apos;re signed up!
         </h2>
         <p className="mt-3 text-lg text-iron">
-          Thanks, {primary.firstName}. Your reference number is <strong className="text-ink">{done}</strong>. We sent a
-          copy to {primary.email}.
+          Thanks, {primary.firstName}. Your reference number is <strong className="text-ink">{done}</strong>. A copy of
+          your signed agreement was emailed to {primary.email}.
         </p>
-        <p className="mt-2 font-semibold">Nothing has been charged.</p>
+        <p className="mt-2 font-semibold">Nothing has been charged yet.</p>
         <ol className="mx-auto mt-8 max-w-lg space-y-3 text-left">
           {onlineApplication.nextSteps.map((s, i) => (
             <li key={s} className="flex gap-3">
@@ -212,7 +237,7 @@ export function JoinForm() {
           {step === "plan" && "Choose your plan"}
           {step === "you" && "Your information"}
           {step === "family" && "Family members"}
-          {step === "review" && "Review & submit"}
+          {step === "sign" && "Review & sign your agreement"}
         </h2>
         <p className="mt-1 text-sm text-concrete">
           Step {stepIndex + 1} of {steps.length}
@@ -227,7 +252,7 @@ export function JoinForm() {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            if (step === "review") submit();
+            if (step === "sign") submit();
             else next();
           }}
         >
@@ -362,87 +387,204 @@ export function JoinForm() {
               );
             })}
 
-          {step === "review" && (
+          {step === "sign" && (
             <>
-              <section aria-labelledby="review-cost" className="rounded-md border-2 border-ink/15">
-                <h3 id="review-cost" className="border-b border-ink/10 bg-paper px-4 py-3 font-condensed text-lg font-semibold uppercase tracking-wide">
-                  Your costs: {q.plan.name}, {q.memberCount} {q.memberCount === 1 ? "member" : "members"}
+              {/* Membership summary, laid out like the paper agreement */}
+              <section aria-labelledby="sign-summary" className="rounded-md border-2 border-ink/15">
+                <h3 id="sign-summary" className="border-b border-ink/10 bg-paper px-4 py-3 font-condensed text-lg font-semibold uppercase tracking-wide">
+                  Membership summary
                 </h3>
                 <dl className="divide-y divide-ink/10 px-4 text-[15px]">
-                  {q.dueTodayLines.map((l) => (
-                    <Row key={l.label} label={l.label} value={formatMoney(l.cents)} />
-                  ))}
-                  <Row label="Total due when you sign" value={formatMoney(q.dueTodayCents)} strong />
-                  <Row label="Monthly amount" value={formatMoney(q.monthlyCents)} />
                   <Row
-                    label="Monthly payments after signing"
-                    value={q.remainingPayments === null ? "Every month until you cancel" : `${q.remainingPayments}`}
+                    label="Membership type"
+                    value={`${q.plan.name}${family.length ? ` + ${family.length} additional ${family.length === 1 ? "member" : "members"}` : ""}`}
                   />
-                  <Row label="First monthly payment" value="1 month after you sign" />
-                  {q.termDuesTotalCents !== null && (
-                    <Row label={`Total dues for the ${q.plan.termMonths}-month term`} value={formatMoney(q.termDuesTotalCents)} />
-                  )}
-                  <Row label="Club Improvement fee" value={q.annualFeeText} />
-                  <Row label="Early cancellation fee" value={q.earlyCancellation} />
+                  <Row label="Initial number of months" value={q.plan.termMonths ? String(q.plan.termMonths) : "Month to month"} />
+                  <Row
+                    label="Enrollment fee"
+                    value={
+                      hasEnrollmentDeal(q.plan)
+                        ? `${formatMoney(q.enrollmentCents)} (normally ${money(q.plan.regularEnrollmentFee)})`
+                        : formatMoney(q.enrollmentCents)
+                    }
+                  />
+                  <Row label="First month's dues" value={formatMoney(q.firstMonthCents)} />
+                  <Row label="Last month's dues" value={q.plan.lastMonthDueAtSignup ? formatMoney(q.lastMonthCents) : "Not required"} />
+                  <Row label="Total due at signing" value={formatMoney(q.dueTodayCents)} strong />
+                  <Row label="Monthly amount" value={formatMoney(q.monthlyCents)} />
+                  <Row label="Annual fee" value={q.annualFeeText} />
+                  <Row label="Cancellation fee" value={q.plan.termMonths ? `${q.earlyCancellation} (before the term ends)` : "None"} />
                 </dl>
-                <p className="border-t border-ink/10 px-4 py-3 text-sm text-concrete">
-                  <strong className="text-ink">Nothing is charged online.</strong> You&apos;ll pay when you sign your agreement with us.
-                </p>
-              </section>
-
-              <section aria-labelledby="review-people" className="rounded-md border-2 border-ink/15 p-4 text-[15px]">
-                <h3 id="review-people" className="font-condensed text-lg font-semibold uppercase tracking-wide">
-                  Members
-                </h3>
-                <ul className="mt-2 space-y-1">
-                  <li>
-                    <strong>{primary.firstName} {primary.lastName}</strong> (Primary) · {primary.email}
-                  </li>
-                  {family.map((m, i) => (
-                    <li key={i}>
-                      {m.firstName} {m.lastName} · {m.relationship}
+                <div className="border-t border-ink/10 px-4 py-3 text-sm">
+                  <p className="font-semibold text-ink">Members</p>
+                  <ul className="mt-1 text-iron">
+                    <li>
+                      {primary.firstName} {primary.lastName} (Primary, financially responsible)
                     </li>
-                  ))}
-                </ul>
-                <button type="button" onClick={() => setStep("you")} className="mt-2 text-sm font-semibold text-brick underline">
-                  Edit details
-                </button>
+                    {family.map((m, i) => (
+                      <li key={i}>
+                        {m.firstName} {m.lastName} ({m.relationship})
+                      </li>
+                    ))}
+                  </ul>
+                  <button type="button" onClick={() => setStep("you")} className="mt-1 font-semibold text-brick underline">
+                    Edit details
+                  </button>
+                </div>
               </section>
 
-              <section aria-labelledby="review-terms" className="space-y-4">
-                <h3 id="review-terms" className="font-condensed text-lg font-semibold uppercase tracking-wide">
-                  Terms
+              {/* Full agreement */}
+              <section aria-labelledby="sign-agreement" className="space-y-3">
+                <h3 id="sign-agreement" className="font-condensed text-lg font-semibold uppercase tracking-wide">
+                  Membership agreement: please read it all
                 </h3>
-                <div className="rounded-md bg-paper p-4 text-sm text-iron">
-                  <p>
-                    <strong className="text-ink">Automatic renewal:</strong>{" "}
-                    {q.plan.termMonths
-                      ? `After your ${q.plan.termMonths}-month term, your membership continues automatically month to month at ${formatMoney(q.monthlyCents)} per month until you cancel with ${afterTerm.noticeDays} days' written notice.`
-                      : `Your membership renews automatically every month at ${formatMoney(q.monthlyCents)} until you cancel with ${afterTerm.noticeDays} days' written notice.`}{" "}
-                    You can cancel online any time.
-                  </p>
-                  <p className="mt-2">
-                    <strong className="text-ink">Right to cancel:</strong> after you sign your agreement, you can cancel for a full refund
-                    before midnight of the {rules.rightToCancelBusinessDays}th business day (not counting Sundays and holidays).
-                  </p>
+                <div
+                  ref={agreementBox}
+                  onScroll={onAgreementScroll}
+                  tabIndex={0}
+                  role="region"
+                  aria-label="Membership agreement"
+                  className="max-h-[28rem] overflow-y-auto rounded-md border-2 border-ink/15 bg-white p-4"
+                >
+                  <Prose>
+                    <AgreementText />
+                  </Prose>
                 </div>
-                <Checkbox name="agreeTermsReviewed" checked={agree.terms} onChecked={(v) => setAgree((a) => ({ ...a, terms: v }))} error={errors.agreeTermsReviewed}>
-                  I have reviewed the{" "}
-                  <Link href="/legal/membership-terms" target="_blank" className="font-semibold text-brick underline">
-                    Membership Terms
-                  </Link>{" "}
-                  and understand I will sign the full agreement before my membership starts.
+                {!scrolledToEnd && (
+                  <p className="text-sm font-semibold text-brick">Scroll to the end of the agreement to continue.</p>
+                )}
+                <Checkbox
+                  name="agreeTermsRead"
+                  checked={agree.read}
+                  disabled={!scrolledToEnd}
+                  onChecked={(v) => setAgree((a) => ({ ...a, read: v }))}
+                  error={errors.agreeTermsRead}
+                >
+                  I have read the entire membership agreement, including the Conditions of Membership.
                 </Checkbox>
-                <Checkbox name="agreeAutoRenew" checked={agree.autoRenew} onChecked={(v) => setAgree((a) => ({ ...a, autoRenew: v }))} error={errors.agreeAutoRenew}>
-                  I understand my membership will <strong>renew automatically</strong> each month as described above until I cancel.
+              </section>
+
+              {/* Initials */}
+              <section aria-labelledby="sign-initials" className="space-y-3">
+                <h3 id="sign-initials" className="font-condensed text-lg font-semibold uppercase tracking-wide">
+                  Initial each section
+                </h3>
+                <TextField
+                  className="max-w-[12rem]"
+                  label="Your initials"
+                  name="initials"
+                  autoComplete="off"
+                  maxLength={4}
+                  value={initials}
+                  onValue={(v) => setInitials(v.toUpperCase().replace(/[^A-Z]/g, ""))}
+                  error={errors.initials}
+                />
+                <ul className="divide-y divide-ink/10 rounded-md border-2 border-ink/15">
+                  {SECTIONS.map((sec) => {
+                    const on = initialed.includes(sec.id);
+                    return (
+                      <li key={sec.id}>
+                        <label
+                          className={`flex items-center justify-between gap-3 px-4 py-2.5 ${initials ? "cursor-pointer" : "cursor-not-allowed opacity-60"}`}
+                        >
+                          <span className="text-[15px]">{sec.title}</span>
+                          <span className="flex shrink-0 items-center gap-2">
+                            <span
+                              className={`min-w-[3.5rem] border-b-2 px-2 text-center font-display ${on ? "border-brick text-brick" : "border-ink/30 text-concrete/50"}`}
+                            >
+                              {on ? initials : "initial"}
+                            </span>
+                            <input
+                              type="checkbox"
+                              className="h-5 w-5 accent-brick"
+                              checked={on}
+                              disabled={!initials}
+                              onChange={(e) => toggleInitial(sec.id, e.target.checked)}
+                              aria-label={`Initial: ${sec.title}`}
+                            />
+                          </span>
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+                {!initials && <p className="text-sm text-concrete">Enter your initials first, then check each section.</p>}
+                {errors.initialedSections && (
+                  <p className="text-sm font-semibold text-brick">{errors.initialedSections}</p>
+                )}
+              </section>
+
+              {/* Right to cancel, auto-renewal and other consents */}
+              <section className="space-y-4">
+                <div className="rounded-md border-4 border-ink p-4 text-[15px] font-bold text-ink">
+                  Your right to cancel: you may cancel this agreement for a full refund before midnight of the{" "}
+                  {["", "first", "second", "third", "fourth", "fifth", "sixth", "seventh"][rules.rightToCancelBusinessDays] ??
+                    rules.rightToCancelBusinessDays}{" "}
+                  business day after you sign it, not counting Sundays and holidays. Section 9 of the agreement explains how.
+                </div>
+                <Checkbox
+                  name="agreeAutoRenew"
+                  checked={agree.autoRenew}
+                  onChecked={(v) => setAgree((a) => ({ ...a, autoRenew: v }))}
+                  error={errors.agreeAutoRenew}
+                >
+                  <strong>Automatic renewal:</strong>{" "}
+                  {q.plan.termMonths
+                    ? `I agree that after my ${q.plan.termMonths}-month term, my membership continues automatically month to month at ${formatMoney(q.monthlyCents)} a month until I cancel with ${afterTerm.noticeDays} days' written notice.`
+                    : `I agree that my membership renews automatically every month at ${formatMoney(q.monthlyCents)} until I cancel with ${afterTerm.noticeDays} days' written notice.`}
                 </Checkbox>
                 {hasMinor && (
-                  <Checkbox name="agreeGuardian" checked={agree.guardian} onChecked={(v) => setAgree((a) => ({ ...a, guardian: v }))} error={errors.agreeGuardian}>
-                    I am the parent or legal guardian of the members under {rules.adultAge} on this application.
+                  <Checkbox
+                    name="agreeGuardian"
+                    checked={agree.guardian}
+                    onChecked={(v) => setAgree((a) => ({ ...a, guardian: v }))}
+                    error={errors.agreeGuardian}
+                  >
+                    I am the parent or legal guardian of the members under {rules.adultAge} on this membership, and I sign this
+                    agreement for them.
                   </Checkbox>
                 )}
-                <Checkbox name="agreeContact" checked={agree.contact} onChecked={(v) => setAgree((a) => ({ ...a, contact: v }))} error={errors.agreeContact}>
-                  {business.name} may contact me by phone, text or email about this application.
+                <Checkbox
+                  name="agreeContact"
+                  checked={agree.contact}
+                  onChecked={(v) => setAgree((a) => ({ ...a, contact: v }))}
+                  error={errors.agreeContact}
+                >
+                  {business.name} may contact me by phone, text or email to set up my membership and payment.
+                </Checkbox>
+              </section>
+
+              {/* Signature */}
+              <section aria-labelledby="sign-signature" className="space-y-3 rounded-md border-2 border-brick/40 bg-[#fff6f4] p-4">
+                <h3 id="sign-signature" className="font-condensed text-lg font-semibold uppercase tracking-wide">
+                  Member signature
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
+                  <TextField
+                    label="Type your full name to sign"
+                    name="signatureName"
+                    autoComplete="name"
+                    value={signatureName}
+                    onValue={setSignatureName}
+                    error={errors.signatureName}
+                  />
+                  <p className="pb-3 text-sm text-concrete">
+                    Date: <strong className="text-ink">{new Date().toLocaleDateString("en-US")}</strong>
+                  </p>
+                </div>
+                {signatureName.trim() && (
+                  <p className="font-display text-2xl text-ink" aria-hidden="true">
+                    {signatureName}
+                  </p>
+                )}
+                <Checkbox
+                  name="agreeESign"
+                  checked={agree.eSign}
+                  onChecked={(v) => setAgree((a) => ({ ...a, eSign: v }))}
+                  error={errors.agreeESign}
+                >
+                  I agree that typing my name above is my electronic signature on this membership agreement
+                  {hasMinor ? ", as the Primary member and as parent or guardian" : ""}.
                 </Checkbox>
               </section>
 
@@ -459,11 +601,11 @@ export function JoinForm() {
               </button>
             )}
             <button type="submit" disabled={pending} className={`${buttonClass("primary")} disabled:opacity-60`}>
-              {step === "review" ? (pending ? "Sending…" : "Submit application") : "Continue"}
+              {step === "sign" ? (pending ? "Sending…" : "Sign & submit") : "Continue"}
             </button>
           </div>
           <p className="text-sm text-concrete">
-            We never ask for card or bank details on this website. Payment is set up securely with our member system when you sign.
+            We never ask for card or bank details on this website. We&apos;ll call you to set up payment securely after you sign up.
           </p>
         </form>
       </div>

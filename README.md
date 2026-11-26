@@ -5,7 +5,11 @@ The public website for Bricks Gym, 1810 Main Street, Watsonville, CA.
 ## How it works (plain English)
 
 - **The website is the shop window.** It shows plans, prices, hours, FAQ and legal terms.
-- **Joining:** visitors fill out an online application. The website emails it to you (`inboxEmail` in the settings file), laid out in the same order as the membership form, with the **member number left blank**. You enter the member into **Club Systems**, assign the member number there, then have the person sign the agreement and set up payment.
+- **Joining:** visitors pick a plan, fill in their details, read the full membership agreement, initial each section and sign by typing their name. You get two emails at `inboxEmail`:
+  1. **"New member sign-up"**: everything to enter into **Club Systems**, in the order of the paper form, with the **member number left blank**. It includes the driver's license number, so delete it once entered.
+  2. **"Signed agreement (keep on file)"**: the signed agreement with initials, date and time. The member gets the same copy.
+
+  Then call the member, take their card over the phone, type it straight into Club Systems, and tell them to come in.
 - **No card or bank details ever touch this website.** Payments happen only in Club Systems. No Stripe or other payment processor.
 - **Cancelling:** members can cancel online at `/cancel` (California law requires this for anyone who joined online). It emails you and the member right away with a timestamped request number. You process it in Club Systems.
 - **Club Systems stays the system of record.** The website keeps no database of members.

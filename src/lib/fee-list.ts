@@ -6,7 +6,7 @@ export function otherFees(): { name: string; amount: string; note?: string }[] {
   const f = fees;
   return [
     {
-      name: "Club Improvement fee",
+      name: "Annual fee",
       amount: `${money(f.annualClubImprovement.amount)} per year${f.annualClubImprovement.perMember ? " per member" : ""}`,
       note: `Billed each ${f.annualClubImprovement.month}. The Primary member pays for all additional members.${plansWithoutAnnualFee() ? ` Not charged on ${plansWithoutAnnualFee()} memberships.` : ""}`,
     },

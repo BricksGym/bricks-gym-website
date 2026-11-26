@@ -100,12 +100,14 @@ export function Checkbox({
   checked,
   onChecked,
   error,
+  disabled,
   children,
 }: {
   name: string;
   checked: boolean;
   onChecked: (v: boolean) => void;
   error?: string;
+  disabled?: boolean;
   children: ReactNode;
 }) {
   const id = useId();
@@ -117,13 +119,14 @@ export function Checkbox({
           name={name}
           type="checkbox"
           checked={checked}
+          disabled={disabled}
           onChange={(e) => onChecked(e.target.checked)}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-err` : undefined}
           data-field={name}
           className="mt-1 h-5 w-5 shrink-0 accent-brick"
         />
-        <label htmlFor={id} className="text-iron">
+        <label htmlFor={id} className={disabled ? "text-concrete" : "text-iron"}>
           {children}
         </label>
       </div>

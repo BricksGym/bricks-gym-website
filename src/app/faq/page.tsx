@@ -55,7 +55,7 @@ function faqs(): Faq[] {
     ...remodelFaqs,
     {
       q: "How do I join online?",
-      a: "Pick a plan and fill out the online application. It takes about 5 minutes and nothing is charged online. We'll contact you to finish up at the front desk, where you sign your membership agreement and set up payment securely.",
+      a: "Pick a plan, fill out the application and sign your membership agreement online. It takes about 10 minutes and nothing is charged online. We'll call you to set up your payment card, then just come in with a photo ID and start training.",
       link: { href: "/memberships", label: "Choose a plan" },
     },
     {
@@ -105,7 +105,7 @@ function faqs(): Faq[] {
       ...(portal ? { link: { href: portal, label: "Member portal" } } : {}),
     },
     {
-      q: "What is the Club Improvement fee?",
+      q: "What is the annual fee?",
       a: `A yearly fee of ${money(fees.annualClubImprovement.amount)}${fees.annualClubImprovement.perMember ? " per member" : ""}, billed each ${fees.annualClubImprovement.month}. The Primary member pays it for everyone on the membership.${plansWithoutAnnualFee() ? ` ${plansWithoutAnnualFee()} memberships don't pay it.` : ""}`,
     },
     {

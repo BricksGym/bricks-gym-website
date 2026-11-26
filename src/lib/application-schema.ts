@@ -5,6 +5,7 @@
 import { z } from "zod";
 import { additionalMember, plans, rules, type PlanId } from "@/config/gym";
 import { ageStatus } from "@/lib/age";
+import { initialedSections } from "@/content/agreement";
 
 const name = z.string().trim().min(1, "Required").max(60, "Too long");
 const phone = z
@@ -99,16 +100,28 @@ export const familyMemberSchema = z
 
 const planIds = plans.map((p) => p.id) as [PlanId, ...PlanId[]];
 
+/** Loose name match: lowercase letters only, so "Mary-Ann O'Neil" matches "maryann oneil". */
+const letters = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "");
+
 export const applicationSchema = z
   .object({
     plan: z.enum(planIds),
     primary: primarySchema,
     family: z.array(familyMemberSchema).max(additionalMember.maxOnlineApplication),
     notes: z.string().trim().max(1000),
-    agreeTermsReviewed: z.literal(true, { error: "Please confirm you've reviewed the membership terms." }),
-    agreeAutoRenew: z.literal(true, { error: "Please confirm you understand automatic renewal." }),
+    agreeTermsRead: z.literal(true, { error: "Please read the whole membership agreement and check this box." }),
+    initials: z
+      .string()
+      .trim()
+      .toUpperCase()
+      .regex(/^[A-Z]{2,4}$/, "Enter your initials (2 to 4 letters)"),
+    /** IDs of the agreement sections the member initialed. All are required. */
+    initialedSections: z.array(z.string().max(40)).max(40),
+    agreeAutoRenew: z.literal(true, { error: "Please confirm you agree to automatic renewal." }),
     agreeGuardian: z.boolean(),
-    agreeContact: z.literal(true, { error: "Please confirm we may contact you about your application." }),
+    agreeContact: z.literal(true, { error: "Please confirm we may contact you about your membership." }),
+    signatureName: z.string().trim().min(3, "Type your full name to sign").max(120),
+    agreeESign: z.literal(true, { error: "Please confirm this is your electronic signature." }),
     turnstileToken: z.string().max(4096).optional(),
     company: z.string().max(0).optional(), // hidden spam trap; real people leave it empty
   })
@@ -121,7 +134,28 @@ export const applicationSchema = z
         message: "Please confirm you are the parent or legal guardian of the members under 18.",
       });
     }
+    const missing = initialedSectionIds().filter((id) => !a.initialedSections.includes(id));
+    if (missing.length) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["initialedSections"],
+        message: `Please initial every section (${missing.length} left).`,
+      });
+    }
+    const sig = letters(a.signatureName);
+    if (!sig.includes(letters(a.primary.firstName)) || !sig.includes(letters(a.primary.lastName))) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["signatureName"],
+        message: `Type your full name as entered: ${a.primary.firstName} ${a.primary.lastName}`,
+      });
+    }
   });
+
+/** IDs of the sections that need initials, straight from the agreement text. */
+export function initialedSectionIds(): string[] {
+  return initialedSections().map((s) => s.id);
+}
 
 export type Application = z.infer<typeof applicationSchema>;
 export type PrimaryInput = z.input<typeof primarySchema>;

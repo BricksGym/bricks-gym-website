@@ -49,7 +49,7 @@ export function hasEnrollmentDeal(plan: Plan): plan is Plan & { regularEnrollmen
   return typeof plan.regularEnrollmentFee === "number" && plan.regularEnrollmentFee > plan.enrollmentFee;
 }
 
-/** Names of the plans with no Club Improvement fee, e.g. "Month-to-Month". */
+/** Names of the plans with no annual fee, e.g. "Month-to-Month". */
 export function plansWithoutAnnualFee(): string {
   return plans.filter((p) => !p.annualFee).map((p) => p.name).join(" and ");
 }
@@ -75,7 +75,7 @@ export type Quote = {
   remainingPayments: number | null;
   /** Sum of all monthly dues over the initial term. null for month-to-month. */
   termDuesTotalCents: number | null;
-  /** 0 when the plan has no Club Improvement fee. */
+  /** 0 when the plan has no annual fee. */
   annualFeeCents: number;
   annualFeeMonth: string;
   /** "$59.99 each March" or "None on this plan". */

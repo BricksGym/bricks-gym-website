@@ -65,7 +65,7 @@ export function agreementSections(): AgreementSection[] {
           const annual = p.annualFee
             ? `${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} each ${f.annualClubImprovement.month}`
             : "none";
-          return `- **${p.name}**${p.badge ? ` (${p.badge})` : ""}${p.termMonths ? "" : " (no minimum term)"}: ${money(p.monthlyDues)} a month. Enrollment fee: ${enrollment}. Due at signing: ${formatMoney(q.dueTodayCents)} (${signup}). Club Improvement fee: ${annual}. Early cancellation fee: ${earlyCancellationText(p).toLowerCase() === "none" ? "none" : earlyCancellationText(p)}.`;
+          return `- **${p.name}**${p.badge ? ` (${p.badge})` : ""}${p.termMonths ? "" : " (no minimum term)"}: ${money(p.monthlyDues)} a month. Enrollment fee: ${enrollment}. Due at signing: ${formatMoney(q.dueTodayCents)} (${signup}). Annual fee: ${annual}. Cancellation fee (before the term ends): ${earlyCancellationText(p).toLowerCase() === "none" ? "none" : earlyCancellationText(p)}.`;
         }),
         `Each additional member on the same membership adds ${plans.map((p) => `${money(additionalMember.monthlyDues[p.id])} a month on ${p.name}`).join(", ")}${additionalMember.enrollmentFee > 0 ? `, plus a ${money(additionalMember.enrollmentFee)} enrollment fee` : ", with no enrollment fee"}.`,
         "Other fees, such as freezes, returned payments and late charges, are described below.",
@@ -106,10 +106,10 @@ export function agreementSections(): AgreementSection[] {
     },
     {
       id: "annual-fee",
-      title: "4. Annual Club Improvement fee",
+      title: "4. Annual fee",
       initial: true,
       body: [
-        `A Club Improvement fee of ${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} is charged once a year, in ${f.annualClubImprovement.month}. The Primary member pays this fee for all additional members.${plansWithoutAnnualFee() ? ` This fee is not charged on ${plansWithoutAnnualFee()} memberships.` : ""}`,
+        `An annual fee of ${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} is charged once a year, in ${f.annualClubImprovement.month}. The Primary member pays this fee for all additional members.${plansWithoutAnnualFee() ? ` This fee is not charged on ${plansWithoutAnnualFee()} memberships.` : ""}`,
       ],
     },
     {
@@ -125,7 +125,7 @@ export function agreementSections(): AgreementSection[] {
       title: "6. Automatic payments and automatic renewal",
       initial: true,
       body: [
-        "You authorize the Gym, through its billing provider (Club Systems), to charge your monthly dues, the annual Club Improvement fee and any other fees you agree to, to the card or bank account you provide, until you cancel as described in this agreement.",
+        "You authorize the Gym, through its billing provider (Club Systems), to charge your monthly dues, the annual fee and any other fees you agree to, to the card or bank account you provide, until you cancel as described in this agreement.",
         `A fee of ${money(f.returnedPayment)} applies to each returned or failed payment.`,
         "**Automatic renewal:** your membership renews automatically each month after the initial term (or each month, for month-to-month) and will be charged at the same monthly rate until you cancel. **You can cancel online at any time** on our website's cancellation page, as well as in person, by email or by mail (see Condition {{c-termination}}).",
         "Your consent to automatic renewal is given separately, by a checkbox or initials, and is not pre-checked.",
@@ -301,6 +301,7 @@ export function agreementSections(): AgreementSection[] {
       title: "Signatures",
       body: [
         "By signing, you confirm that you have read this agreement, including the right-to-cancel notice, and received a copy.",
+        "You may sign this agreement in person or electronically. When you sign online, typing your full name and checking the electronic-signature box is your signature, and your initials are recorded for each section marked for initials. A copy of the signed agreement is emailed to you right away.",
         "- Primary member signature and date",
         "- Parent or guardian signature and date (if a member is under 18)",
         `- ${gym} representative signature and date`,
@@ -328,7 +329,18 @@ function earlyCancellationLike(x: { fee: number; orRemainingDuesIfLess: boolean 
 }
 
 /** Plain text version, for pasting into Club Systems. */
-export function agreementPlainText(): string {
+/** Sections the member initials (shown as checkboxes on the online application). */
+export function initialedSections(): { id: string; title: string }[] {
+  return agreementSections()
+    .filter((s) => s.initial)
+    .map((s) => ({ id: s.id, title: s.title }));
+}
+
+/**
+ * Plain-text agreement. Pass the member's initials to fill in the initial
+ * lines (for the signed copy emailed after an online signup).
+ */
+export function agreementPlainText(opts: { initials?: string } = {}): string {
   const strip = (s: string) => s.replace(/\*\*/g, "");
   const out: string[] = [
     `${business.name.toUpperCase()} MEMBERSHIP AGREEMENT`,
@@ -343,7 +355,7 @@ export function agreementPlainText(): string {
     }
     out.push(s.title.toUpperCase().replace(/^CONDITIONS /, ""));
     for (const p of s.body) out.push(strip(p));
-    if (s.initial) out.push("Initials: ________");
+    if (s.initial) out.push(`Initials: ${opts.initials ? `${opts.initials} (initialed online)` : "________"}`);
     out.push("");
   }
   return out.join("\n");

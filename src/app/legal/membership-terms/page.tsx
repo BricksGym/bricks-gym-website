@@ -13,7 +13,7 @@ export default function MembershipTermsPage() {
   return (
     <>
       <PageHero eyebrow="Legal" title="Membership terms">
-        The same agreement you sign at the front desk.
+        The same agreement you sign online or at the front desk.
       </PageHero>
       <Section>
         <Prose>

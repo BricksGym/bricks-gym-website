@@ -29,7 +29,7 @@ export default function MembershipsPage() {
           ))}
         </div>
         <p className="mt-8 text-sm text-iron">
-          Every plan&apos;s full costs, including the yearly Club Improvement fee and early cancellation fees, are in our{" "}
+          Every plan&apos;s full costs, including the annual fee and cancellation fees, are in our{" "}
           <Link href="/legal/membership-terms#sec-plans" className="font-semibold text-brick underline">
             Membership Terms
           </Link>
@@ -51,7 +51,7 @@ export default function MembershipsPage() {
 
             <h3 className="mt-10 font-display text-2xl">How joining works</h3>
             <ol className="mt-4 space-y-3">
-              {["Pick a plan and fill out the online application (about 5 minutes).", ...onlineApplication.nextSteps].map(
+              {["Pick a plan, fill out the application and sign your agreement online (about 10 minutes).", ...onlineApplication.nextSteps].map(
                 (s, i) => (
                   <li key={s} className="flex gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brick font-bold text-white">
