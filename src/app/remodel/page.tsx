@@ -7,7 +7,7 @@ import { Container, Eyebrow, H2, PageHero, Section } from "@/components/ui";
 export const metadata: Metadata = {
   title: "Remodel",
   description:
-    "Bricks Gym in Watsonville is getting a huge remodel: new machines, a bigger workout space, new flooring, fresh paint, a new sound system and a sauna.",
+    "Bricks Gym in Watsonville is getting a huge remodel: new machines, a bigger workout space, new flooring, fresh paint and a new sound system.",
   alternates: { canonical: "/remodel" },
 };
 

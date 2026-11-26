@@ -309,7 +309,7 @@ export const amenities: { name: string; description: string; comingSoon?: boolea
   { name: "Free Weights", description: "Racks, plates, dumbbells and benches." }, // PLACEHOLDER
   { name: "Cardio", description: "Treadmills, bikes and more." }, // PLACEHOLDER
   { name: "Group Fitness", description: "Class schedule coming soon." }, // PLACEHOLDER
-  { name: "Sauna", description: "Heat up and recover after your workout.", comingSoon: true },
+  { name: "Sauna", description: "Heat up and recover after your workout." },
 ];
 
 // ---------------------------------------------------------------------------
@@ -331,10 +331,9 @@ export const remodel = {
     { name: "New flooring", description: "Fresh, durable gym flooring throughout." },
     { name: "Fresh paint", description: "Every wall repainted for a clean new look." },
     { name: "New sound system", description: "Better music to push you through every set." },
-    { name: "Sauna", description: "A new sauna for recovery after your workout." },
   ],
   /** One-sentence summary used in the FAQ. */
-  summary: "new machines, a bigger workout space, new flooring, fresh paint on every wall, a new sound system and a sauna",
+  summary: "new machines, a bigger workout space, new flooring, fresh paint on every wall, and a new sound system",
   closing: "And that's just the start. Huge things are coming to Bricks Gym.",
 };
 
