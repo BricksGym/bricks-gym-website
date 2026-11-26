@@ -9,15 +9,15 @@ Not legal advice. These items need a California attorney's review before launch.
 3. **Death and disability; moving more than 25 miles.** Confirm that the $99 relocation fee and the $149 medical-cancellation fee are allowed, given the statute's cancellation rights for these events.
 4. **Payment term vs. contract term.** Confirm the post-term month-to-month continuation complies. (Last month's dues are no longer collected up front.)
 4b. **Founding member offer.** The 24-month plan shows the usual $49.99 enrollment fee crossed out. Confirm $49.99 is a price actually charged, so the "was" price is accurate (California and FTC rules on former-price comparisons), and whether the offer needs an end date.
-5. **Ways to cancel.** The agreement accepts cancellation online, in person, by email from the address on file, and by first-class mail. Confirm this is sufficient.
+5. **Ways to cancel.** The owner wants cancellations handled in person. The agreement now accepts cancellation in person, by email from the address on file (the website links a pre-written cancellation email), and by first-class mail. The online cancellation form was removed. Confirm this is sufficient now that members sign up and sign online.
 6. **Non-refundable fees** (Condition 8). Confirm the exceptions are worded correctly.
 
 ## Automatic Renewal Law (Bus. & Prof. Code §17600 et seq., incl. AB 2863)
 
-7. **How sign-up works now:** the online form is an application only. The contract is signed and payment set up later through Club Systems. Confirm whether this counts as an "online" sign-up for the online-cancellation rule. The site offers online cancellation either way.
+7. **How sign-up works now:** members sign the agreement online, so this is an online sign-up under the ARL. The online way to cancel offered is a pre-written termination email (linked in the footer and FAQ). Confirm this satisfies Bus. & Prof. Code 17602(d) as amended by AB 2863.
 8. **Auto-renewal consent:** the website collects a separate, unchecked acknowledgment. The binding consent must also be captured separately (unchecked) on the Club Systems agreement, and stored.
 9. **Acknowledgment email, annual reminder, price-change notice (7–30 days):** promised in the agreement. Confirm Club Systems sends them, or set up a manual process.
-10. **Online cancellation without blocking retention offers:** `/cancel` has no retention offer. Confirm the email-based process (gym processes it in Club Systems) is acceptable.
+10. **Cancellation requests by email:** the gym replies to confirm and processes it in Club Systems. Confirm no retention offer may delay the cancellation.
 
 ## Other agreement terms (kept as written, flagged for review)
 

@@ -25,7 +25,7 @@ Send these to Club Systems (office@healthclubsystems.com, 800-227-6194) after yo
 
 ## Notices (California Automatic Renewal Law)
 
-- [ ] Send an acknowledgment email after signup that explains the auto-renewal terms and how to cancel (including online at `thebricksgym.com/cancel`).
+- [ ] Send an acknowledgment email after signup that explains the auto-renewal terms and how to cancel (in person, by mail, or by email using the pre-written cancellation email linked on the website).
 - [ ] Send a yearly reminder of the membership terms.
 - [ ] Send price-change notices 7–30 days in advance.
 - [ ] Ask: can members cancel online in the Member Portal? If so, send us the link and we'll add it to the site.

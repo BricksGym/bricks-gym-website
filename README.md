@@ -11,7 +11,7 @@ The public website for Bricks Gym, 1810 Main Street, Watsonville, CA.
 
   Then call the member, take their card over the phone, type it straight into Club Systems, and tell them to come in.
 - **No card or bank details ever touch this website.** Payments happen only in Club Systems. No Stripe or other payment processor.
-- **Cancelling:** members can cancel online at `/cancel` (California law requires this for anyone who joined online). It emails you and the member right away with a timestamped request number. You process it in Club Systems.
+- **Cancelling:** members cancel in person at the front desk, by mail, or by email. The FAQ and the footer have a "Cancel by email" button that opens a ready-to-send cancellation email to your inbox. (Because people sign up online, California law requires an online way to cancel; a pre-written email counts.) Reply to confirm, and process it in Club Systems.
 - **Club Systems stays the system of record.** The website keeps no database of members.
 
 ## Change prices, fees, hours or contact details

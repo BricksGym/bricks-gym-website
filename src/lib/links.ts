@@ -1,4 +1,4 @@
-import { aboutStory, classes, clubSystems, personalTraining, remodel, type PlanId } from "@/config/gym";
+import { business, aboutStory, classes, clubSystems, personalTraining, remodel, type PlanId } from "@/config/gym";
 
 /** Which optional pages have real content. Empty pages stay hidden automatically. */
 export const show = {
@@ -30,3 +30,22 @@ export const nav = [
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
+
+/**
+ * A ready-to-send cancellation email (California's auto-renewal law accepts a
+ * pre-written termination email as the online way to cancel).
+ */
+export function cancelEmailHref(): string {
+  const to = business.email || business.inboxEmail;
+  const subject = `Cancel my ${business.name} membership`;
+  const body = [
+    `Please cancel my ${business.name} membership.`,
+    "",
+    "Name on the membership:",
+    "Member number (if you know it):",
+    "Phone number:",
+    "",
+    "I understand my membership ends after the 30-day written notice period, and any cancellation fee in my agreement applies.",
+  ].join("\n");
+  return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}

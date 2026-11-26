@@ -12,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...(show.about ? ["/about"] : []),
     "/faq",
     "/contact",
-    "/cancel",
     "/legal/membership-terms",
     "/legal/privacy",
     "/legal/waiver",

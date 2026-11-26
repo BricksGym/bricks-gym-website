@@ -3,6 +3,7 @@ import Link from "next/link";
 import { afterTerm, business, clubSystems, extraFaqs, fees, plans, remodel, rules } from "@/config/gym";
 import { PageHero, Section } from "@/components/ui";
 import { money, plansWithoutAnnualFee } from "@/lib/pricing";
+import { cancelEmailHref } from "@/lib/links";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -90,8 +91,8 @@ function faqs(): Faq[] {
     },
     {
       q: "How do I cancel?",
-      a: `You can cancel online, any time, from our cancellation page. No phone call or visit needed. You can also cancel in person, by email from the address on your account, or by mail to ${business.noticeAddress}. Memberships end with ${afterTerm.noticeDays} days' written notice. If you're still within your initial term, the early cancellation fee for your plan applies. New members can cancel for a full refund within ${rules.rightToCancelBusinessDays} business days of signing (not counting Sundays and holidays).`,
-      link: { href: "/cancel", label: "Cancel online" },
+      a: `Cancel in person at the front desk, by email from the address on your account (use the button below for a ready-to-send cancellation email), or by mail to ${business.noticeAddress}. Memberships end with ${afterTerm.noticeDays} days' written notice. If you're still within your initial term, the cancellation fee for your plan applies. New members can cancel for a full refund within ${rules.rightToCancelBusinessDays} business days of signing (not counting Sundays and holidays).`,
+      link: { href: cancelEmailHref(), label: "Email us to cancel" },
     },
     {
       q: "What happens when my term ends?",
@@ -153,9 +154,15 @@ export default function FaqPage() {
               <p className="mt-3 text-iron">{f.a}</p>
               {f.link && (
                 <p className="mt-2">
-                  <Link href={f.link.href} className="font-semibold text-brick underline">
-                    {f.link.label} →
-                  </Link>
+                  {f.link.href.startsWith("mailto:") ? (
+                    <a href={f.link.href} className="font-semibold text-brick underline">
+                      {f.link.label} →
+                    </a>
+                  ) : (
+                    <Link href={f.link.href} className="font-semibold text-brick underline">
+                      {f.link.label} →
+                    </Link>
+                  )}
                 </p>
               )}
             </details>

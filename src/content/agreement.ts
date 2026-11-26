@@ -127,7 +127,7 @@ export function agreementSections(): AgreementSection[] {
       body: [
         "You authorize the Gym, through its billing provider (Club Systems), to charge your monthly dues, the annual fee and any other fees you agree to, to the card or bank account you provide, until you cancel as described in this agreement.",
         `A fee of ${money(f.returnedPayment)} applies to each returned or failed payment.`,
-        "**Automatic renewal:** your membership renews automatically each month after the initial term (or each month, for month-to-month) and will be charged at the same monthly rate until you cancel. **You can cancel online at any time** on our website's cancellation page, as well as in person, by email or by mail (see Condition {{c-termination}}).",
+        "**Automatic renewal:** your membership renews automatically each month after the initial term (or each month, for month-to-month) and will be charged at the same monthly rate until you cancel. **You can cancel at any time** in person at the front desk, by email (a ready-to-send cancellation email is linked on our website) or by mail (see Condition {{c-termination}}).",
         "Your consent to automatic renewal is given separately, by a checkbox or initials, and is not pre-checked.",
         "We will send you an acknowledgment of these terms, including how to cancel, after you join; a yearly reminder of your membership terms; and notice at least 7 days (and no more than 30 days) before any change in price, explaining the change and how to cancel.",
       ],
@@ -156,7 +156,7 @@ export function agreementSections(): AgreementSection[] {
       emphasized: true,
       body: [
         `**YOU, THE BUYER, MAY CANCEL THIS AGREEMENT AT ANY TIME BEFORE MIDNIGHT OF THE GYM'S ${["", "FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH", "SEVENTH"][rules.rightToCancelBusinessDays] ?? rules.rightToCancelBusinessDays} BUSINESS DAY AFTER THE DATE YOU SIGN IT, EXCLUDING SUNDAYS AND HOLIDAYS.**`,
-        `**To cancel, deliver or mail a signed and dated notice stating that you are cancelling this agreement to: ${business.noticeAddress}, or email it to ${business.email || "[GYM EMAIL — PLACEHOLDER]"}, or use the cancellation page on our website. If you cancel within this period, all money you paid will be refunded within 10 days of our receiving your notice.**`,
+        `**To cancel, deliver or mail a signed and dated notice stating that you are cancelling this agreement to: ${business.noticeAddress}, or email it to ${business.email || "[GYM EMAIL — PLACEHOLDER]"}. If you cancel within this period, all money you paid will be refunded within 10 days of our receiving your notice.**`,
       ],
     },
     {
@@ -227,9 +227,9 @@ export function agreementSections(): AgreementSection[] {
       title: "Conditions 9. Ending your membership",
       body: [
         `After the initial term, or for month-to-month memberships, either you or the Gym may end the membership with ${afterTerm.noticeDays} days' written notice. You pay all amounts owed through the end of the notice period.`,
-        `To end a term membership before the term is over, give ${afterTerm.noticeDays} days' written, signed notice and pay the early cancellation fee for your plan plus any past-due balance:`,
+        `To end a term membership before the term is over, give ${afterTerm.noticeDays} days' written, signed notice and pay the cancellation fee for your plan plus any past-due balance:`,
         ...termPlans.map((p) => `- ${p.name} plan: ${earlyCancellationText(p)}`),
-        "**Written notice may be given online through our website's cancellation page, in person at the front desk, by email from the email address on your account, or by first-class mail to " +
+        `**Written notice may be given in person at the front desk, by email to ${business.email || business.inboxEmail} from the email address on your account, or by first-class mail to ` +
           business.noticeAddress +
           ".**",
       ],

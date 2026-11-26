@@ -2,7 +2,7 @@ import Link from "next/link";
 import { business, clubSystems } from "@/config/gym";
 import { Logo } from "@/components/Logo";
 import { HoursTable } from "@/components/HoursTable";
-import { memberLoginHref, nav } from "@/lib/links";
+import { memberLoginHref, nav, cancelEmailHref } from "@/lib/links";
 
 export function Footer() {
   const { address, social } = business;
@@ -72,9 +72,9 @@ export function Footer() {
               </li>
             )}
             <li>
-              <Link href="/cancel" className="hover:text-bone">
-                Cancel My Membership
-              </Link>
+              <a href={cancelEmailHref()} className="hover:text-bone">
+                Cancel by Email
+              </a>
             </li>
             <li>
               <Link href="/legal/membership-terms" className="hover:text-bone">
