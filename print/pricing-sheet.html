@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bricks Gym Membership Rates</title>
+<!--
+  Printable pricing sheet for the front desk (US Letter, portrait).
+  To update: change the prices below, then re-create the PDF:
+    "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless --disable-gpu --no-pdf-header-footer
+      --virtual-time-budget=8000 --print-to-pdf="print\bricks-gym-pricing-sheet.pdf" "print\pricing-sheet.html"
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Inter:wght@400;600;700&family=Oswald:wght@500;600;700&display=block" rel="stylesheet">
+<style>
+  @page { size: letter portrait; margin: 0; }
+  :root {
+    --brick: #8b1e22; --brick-dark: #5e1316; --ink: #141111; --iron: #2a2524;
+    --concrete: #6e6663; --bone: #f3ede3; --paper: #faf7f2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 8.5in; height: 11in; }
+  body {
+    background: #fff; color: var(--ink); font-family: Inter, Arial, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .sheet { width: 8.5in; height: 11in; padding: 0.45in 0.5in 0.4in; display: flex; flex-direction: column; }
+  .slab { font-family: "Alfa Slab One", Georgia, serif; font-weight: 400; }
+  .cond { font-family: Oswald, "Arial Narrow", sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  header { text-align: center; }
+  header img { width: 3.1in; display: block; margin: 0 auto; }
+  .formerly { margin-top: 0.06in; font-size: 11pt; color: var(--concrete); }
+  .formerly b { color: var(--ink); }
+  h1 { margin-top: 0.14in; font-size: 30pt; color: var(--ink); line-height: 1; }
+  .rule { height: 4px; background: var(--brick); margin: 0.14in auto 0; width: 1.2in; }
+
+  /* Founding member offer */
+  .offer { margin-top: 0.26in; background: var(--brick); color: #fff; border-radius: 10px; overflow: hidden; }
+  .offer-tag { background: var(--ink); text-align: center; padding: 0.07in; font-size: 14pt; font-weight: 700; }
+  .offer-body { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; padding: 0.2in 0.35in 0.24in; gap: 0.2in; }
+  .offer-plan { font-size: 26pt; line-height: 1; }
+  .offer-term { margin-top: 0.06in; font-size: 12pt; font-weight: 600; opacity: 0.9; }
+  .offer-price { font-size: 58pt; line-height: 0.95; margin-top: 0.08in; white-space: nowrap; }
+  .offer-price small { font-family: Oswald, sans-serif; font-size: 16pt; letter-spacing: 0.04em; margin-left: 0.04in; }
+  .offer-right { border-left: 2px solid rgba(255,255,255,0.35); padding-left: 0.3in; }
+  .no-fee { font-size: 21pt; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .was { margin-top: 0.06in; font-size: 14pt; }
+  .was s { opacity: 0.85; text-decoration-thickness: 2px; }
+  .start { margin-top: 0.14in; display: inline-block; background: #fff; color: var(--brick); border-radius: 6px; padding: 0.06in 0.14in; font-size: 14pt; font-weight: 700; }
+
+  /* Other plans */
+  .plans { margin-top: 0.24in; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.18in; }
+  .plan { border: 3px solid var(--ink); border-radius: 10px; padding: 0.18in 0.16in 0.16in; text-align: center; display: flex; flex-direction: column; }
+  .plan h2 { font-size: 17pt; line-height: 1; white-space: nowrap; }
+  .plan h2.long { font-size: 14.5pt; padding-top: 2.5pt; }
+  .plan .term { margin-top: 0.05in; font-size: 10.5pt; color: var(--concrete); font-weight: 600; }
+  .plan .price { margin-top: 0.12in; font-size: 34pt; color: var(--brick); line-height: 1; }
+  .plan .per { font-size: 12pt; color: var(--concrete); font-weight: 600; }
+  .plan dl { margin-top: 0.14in; border-top: 1.5px solid #ddd5ca; font-size: 11pt; text-align: left; }
+  .plan dl div { display: flex; justify-content: space-between; padding: 0.06in 0; border-bottom: 1.5px solid #ddd5ca; }
+  .plan dt { color: var(--iron); }
+  .plan dd { font-weight: 700; }
+  .plan .note { margin-top: auto; padding-top: 0.1in; font-size: 10.5pt; font-weight: 700; color: var(--brick); }
+
+  /* Fine print */
+  .info { margin-top: 0.24in; background: var(--paper); border: 1.5px solid #e5ded3; border-radius: 10px; padding: 0.16in 0.24in; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.2in; }
+  .info h3 { font-size: 11pt; color: var(--brick); font-weight: 700; }
+  .info p { margin-top: 0.04in; font-size: 11pt; color: var(--iron); line-height: 1.35; }
+  .info strong { color: var(--ink); }
+
+  footer { margin-top: auto; text-align: center; }
+  .join { font-size: 17pt; font-weight: 700; color: var(--ink); }
+  .join span { color: var(--brick); }
+  .contact { margin-top: 0.06in; font-size: 11pt; color: var(--concrete); }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <img src="../public/brand/bricks-gym-logo.png" alt="Bricks Gym">
+    <p class="formerly cond">Formerly <b>Body Zone</b> &nbsp;·&nbsp; 1810 Main Street, Watsonville</p>
+    <h1 class="slab">Membership Rates</h1>
+    <div class="rule"></div>
+  </header>
+
+  <section class="offer">
+    <p class="offer-tag cond">★ Founding Member Offer ★</p>
+    <div class="offer-body">
+      <div>
+        <p class="offer-plan slab">24-Month</p>
+        <p class="offer-term cond">Our lowest monthly rate</p>
+        <p class="offer-price slab">$29.99<small>/MONTH</small></p>
+      </div>
+      <div class="offer-right">
+        <p class="no-fee cond">No enrollment fee</p>
+        <p class="was">Normally <s>$49.99</s></p>
+        <p class="start cond">Just $29.99 to start</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="plans">
+    <article class="plan">
+      <h2 class="slab">12-Month</h2>
+      <p class="term cond">12-month term</p>
+      <p class="price slab">$34.99</p>
+      <p class="per">per month</p>
+      <dl>
+        <div><dt>Enrollment fee</dt><dd>$49.99</dd></div>
+        <div><dt>Due at signup</dt><dd>$84.98</dd></div>
+      </dl>
+    </article>
+    <article class="plan">
+      <h2 class="slab">6-Month</h2>
+      <p class="term cond">6-month term</p>
+      <p class="price slab">$44.99</p>
+      <p class="per">per month</p>
+      <dl>
+        <div><dt>Enrollment fee</dt><dd>$49.99</dd></div>
+        <div><dt>Due at signup</dt><dd>$94.98</dd></div>
+      </dl>
+    </article>
+    <article class="plan">
+      <h2 class="slab long">Month-to-Month</h2>
+      <p class="term cond">No long-term commitment</p>
+      <p class="price slab">$54.99</p>
+      <p class="per">per month</p>
+      <dl>
+        <div><dt>Enrollment fee</dt><dd>$49.99</dd></div>
+        <div><dt>Due at signup</dt><dd>$104.98</dd></div>
+      </dl>
+      <p class="note cond">No annual fee</p>
+    </article>
+  </section>
+
+  <section class="info">
+    <div>
+      <h3 class="cond">Due at signup</h3>
+      <p>Enrollment fee <strong>+</strong> your first month&rsquo;s dues.</p>
+    </div>
+    <div>
+      <h3 class="cond">Annual fee</h3>
+      <p><strong>$59.99</strong>, billed each March on 6, 12 and 24-month plans.</p>
+    </div>
+    <div>
+      <h3 class="cond">Day pass</h3>
+      <p><strong>$15</strong> for non-members. Try us out!</p>
+    </div>
+  </section>
+
+  <footer>
+    <p class="join cond">Join at the front desk or online at <span>thebricksgym.com</span></p>
+    <p class="contact">Bricks Gym &nbsp;·&nbsp; 1810 Main Street, Watsonville, CA 95076 &nbsp;·&nbsp; (831) 728-1280</p>
+  </footer>
+</div>
+</body>
+</html>
