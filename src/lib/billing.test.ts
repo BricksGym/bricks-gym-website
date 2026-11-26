@@ -28,9 +28,9 @@ describe("monthly auto-draft (by sign-up day)", () => {
     expect(autoDraft(d(2027, 1, 23)).first).toEqual(d(2027, 2, 28));
     expect(autoDraft(d(2027, 12, 31)).first).toEqual(d(2028, 1, 31));
   });
-  it("1st–7th: last day of the same month (same billing group as the 23rd–31st)", () => {
-    expect(autoDraft(d(2026, 12, 3)).first).toEqual(d(2026, 12, 31));
-    expect(autoDraft(d(2028, 2, 7)).first).toEqual(d(2028, 2, 29));
+  it("1st–7th: last day of next month", () => {
+    expect(autoDraft(d(2026, 12, 3)).first).toEqual(d(2027, 1, 31));
+    expect(autoDraft(d(2028, 1, 7)).first).toEqual(d(2028, 2, 29));
   });
   it("uses Pacific time for today", () => {
     // 6:30 AM UTC on Nov 26 is still Nov 25 in Watsonville.

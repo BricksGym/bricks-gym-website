@@ -43,18 +43,16 @@ export function annualFeeMonth(signup: Ymd): string {
 /**
  * When monthly dues are auto-drafted.
  * - Signed up between the 8th and the 22nd: the 14th of each month, starting next month.
- * - Signed up between the 23rd and the 7th: the last day of each month. That
- *   window is one billing group, so the 23rd–31st start at the end of next
- *   month and the 1st–7th start at the end of the current month.
+ * - Signed up between the 23rd and the 7th: the last day of each month,
+ *   starting at the end of next month.
  */
 export function autoDraft(signup: Ymd): { first: Ymd; dayLabel: string } {
   const mid = billing.midMonth;
+  const next = addMonths(signup.year, signup.month, 1);
   if (signup.day >= mid.fromDay && signup.day <= mid.toDay) {
-    const next = addMonths(signup.year, signup.month, 1);
     return { first: { ...next, day: mid.draftDay }, dayLabel: `the ${ordinalDay(mid.draftDay)} of each month` };
   }
-  const target = signup.day > mid.toDay ? addMonths(signup.year, signup.month, 1) : { year: signup.year, month: signup.month };
-  return { first: { ...target, day: lastDayOf(target.year, target.month) }, dayLabel: "the last day of each month" };
+  return { first: { ...next, day: lastDayOf(next.year, next.month) }, dayLabel: "the last day of each month" };
 }
 
 function ordinalDay(n: number): string {
