@@ -70,13 +70,19 @@ export default function Home() {
             <li key={p.id}>
               <Link
                 href={joinHref(p.id)}
-                className={`block rounded-md border-2 p-4 text-center transition-colors hover:border-brick ${p.featured ? "border-brick" : "border-ink/15"}`}
+                className={`block h-full rounded-md border-2 p-4 text-center transition-colors ${
+                  p.featured
+                    ? "border-brick bg-brick text-white shadow-lg shadow-brick/25 hover:bg-brick-dark"
+                    : "border-ink/15 hover:border-brick"
+                }`}
               >
-                <span className="block font-condensed text-sm font-semibold uppercase tracking-wider text-concrete">{p.name}</span>
-                <span className="mt-1 block font-display text-3xl text-brick">{money(p.monthlyDues)}</span>
-                <span className="block text-sm text-concrete">per month</span>
+                <span className={`block font-condensed text-sm font-semibold uppercase tracking-wider ${p.featured ? "text-white/85" : "text-concrete"}`}>
+                  {p.name}
+                </span>
+                <span className={`mt-1 block font-display text-3xl ${p.featured ? "text-white" : "text-brick"}`}>{money(p.monthlyDues)}</span>
+                <span className={`block text-sm ${p.featured ? "text-white/85" : "text-concrete"}`}>per month</span>
                 {p.badge && (
-                  <span className="mt-2 inline-block rounded bg-brick px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">
+                  <span className="mt-2 inline-block rounded bg-white px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-brick">
                     {p.badge}
                   </span>
                 )}

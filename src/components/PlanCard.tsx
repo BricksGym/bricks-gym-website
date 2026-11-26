@@ -9,20 +9,29 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
   const featured = plan.featured;
   return (
     <article
-      className={`relative flex flex-col rounded-md border-2 bg-white ${featured ? "border-brick" : "border-ink/15"}`}
+      className={`relative flex flex-col overflow-hidden rounded-md ${
+        featured
+          ? "border-[3px] border-brick bg-[#fff6f4] shadow-xl shadow-brick/20 xl:-my-3"
+          : "border-2 border-ink/15 bg-white"
+      }`}
       aria-labelledby={`plan-${plan.id}`}
     >
       {plan.badge && (
-        <p className="stamp absolute -top-3 left-4 rounded bg-brick px-2 py-0.5 text-xs text-white">{plan.badge}</p>
+        <p className="stamp bg-brick px-3 py-2 text-center text-sm tracking-wider text-white">{plan.badge}</p>
       )}
-      <div className="flex-1 px-5 pb-4 pt-6">
+      <div className={`flex-1 px-5 pb-4 ${plan.badge ? "pt-4" : "pt-6"}`}>
         <h3 id={`plan-${plan.id}`} className="font-display text-2xl text-ink">
           {plan.name}
         </h3>
         <p className="mt-2 flex flex-wrap items-baseline gap-x-1">
-          <span className="font-display text-4xl text-brick">{money(plan.monthlyDues)}</span>
+          <span className={`font-display text-brick ${featured ? "text-6xl" : "text-4xl"}`}>{money(plan.monthlyDues)}</span>
           <span className="whitespace-nowrap text-concrete">/ month</span>
         </p>
+        {featured && (
+          <p className="mt-2 inline-block rounded bg-brick/10 px-2 py-1 text-sm font-semibold text-brick">
+            Our lowest monthly rate
+          </p>
+        )}
         <p className="mt-1 text-sm text-concrete">
           {termLabel(plan)} · {formatMoney(q.dueTodayCents)} due at signup
         </p>

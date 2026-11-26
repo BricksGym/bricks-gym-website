@@ -125,29 +125,24 @@ export type Plan = {
 /**
  * Due at signup: the enrollment fee plus the first month's dues.
  * After that, dues are billed monthly.
+ * Plans show on the site in this order (currently lowest price first).
  */
 export const plans: Plan[] = [
   {
-    id: "month-to-month",
-    name: "Month-to-Month",
-    termMonths: null,
-    enrollmentFee: 49.99,
-    monthlyDues: 54.99,
-    lastMonthDueAtSignup: false,
-    annualFee: false, // no annual fee on month-to-month
-    earlyCancellation: null,
-    blurb: "No long-term commitment and no annual fee. Cancel with 30 days' written notice.",
-  },
-  {
-    id: "6-month",
-    name: "6-Month",
-    termMonths: 6,
-    enrollmentFee: 49.99,
-    monthlyDues: 44.99,
+    id: "24-month",
+    name: "24-Month",
+    termMonths: 24,
+    enrollmentFee: 0, // Founding member offer: no enrollment fee
+    regularEnrollmentFee: 49.99, // shown crossed out
+    monthlyDues: 29.99,
     lastMonthDueAtSignup: false,
     annualFee: true,
-    earlyCancellation: { fee: 149, orRemainingDuesIfLess: true }, // PLACEHOLDER (6-month fee not set yet)
-    blurb: "A short commitment to build the habit.",
+    // $299 is from the current agreement. PLACEHOLDER: confirm whether
+    // "or remaining dues, whichever is less" also applies.
+    earlyCancellation: { fee: 299, orRemainingDuesIfLess: true },
+    blurb: "Lock in our best rate as a founding member.",
+    featured: true,
+    badge: "Founding member offer",
   },
   {
     id: "12-month",
@@ -161,20 +156,26 @@ export const plans: Plan[] = [
     blurb: "Lower dues for a full year of training.",
   },
   {
-    id: "24-month",
-    name: "24-Month",
-    termMonths: 24,
-    enrollmentFee: 0, // Founding member offer: no enrollment fee
-    regularEnrollmentFee: 49.99, // shown crossed out
-    monthlyDues: 29.99,
+    id: "6-month",
+    name: "6-Month",
+    termMonths: 6,
+    enrollmentFee: 49.99,
+    monthlyDues: 44.99,
     lastMonthDueAtSignup: false,
     annualFee: true,
-    // $299 is from the current agreement. PLACEHOLDER: confirm whether
-    // "or remaining dues, whichever is less" also applies.
-    earlyCancellation: { fee: 299, orRemainingDuesIfLess: true },
-    blurb: "Founding member special: our lowest monthly rate and no enrollment fee.",
-    featured: true,
-    badge: "Founding member offer",
+    earlyCancellation: { fee: 149, orRemainingDuesIfLess: true }, // PLACEHOLDER (6-month fee not set yet)
+    blurb: "A short commitment to build the habit.",
+  },
+  {
+    id: "month-to-month",
+    name: "Month-to-Month",
+    termMonths: null,
+    enrollmentFee: 49.99,
+    monthlyDues: 54.99,
+    lastMonthDueAtSignup: false,
+    annualFee: false, // no annual fee on month-to-month
+    earlyCancellation: null,
+    blurb: "No long-term commitment and no annual fee. Cancel with 30 days' written notice.",
   },
 ];
 
