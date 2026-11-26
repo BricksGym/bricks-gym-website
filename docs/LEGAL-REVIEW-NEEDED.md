@@ -7,7 +7,8 @@ Not legal advice. These items need a California attorney's review before launch.
 1. **Right to cancel.** The old paper form's 24-hour cancellation window has been replaced with a 5-business-day right to cancel (excluding Sundays and holidays), with a refund within 10 days. Confirm the exact statutory wording, type size (at least 10-point bold) and placement near the signature line.
 2. **Existing members** signed agreements with the 24-hour clause. Ask whether they need notice or any correction.
 3. **Death and disability; moving more than 25 miles.** Confirm that the $99 relocation fee and the $149 medical-cancellation fee are allowed, given the statute's cancellation rights for these events.
-4. **Payment term vs. contract term.** Confirm that collecting last month's dues up front and the post-term month-to-month continuation comply.
+4. **Payment term vs. contract term.** Confirm the post-term month-to-month continuation complies. (Last month's dues are no longer collected up front.)
+4b. **Founding member offer.** The 24-month plan shows the usual $49.99 enrollment fee crossed out. Confirm $49.99 is a price actually charged, so the "was" price is accurate (California and FTC rules on former-price comparisons), and whether the offer needs an end date.
 5. **Ways to cancel.** The agreement accepts cancellation online, in person, by email from the address on file, and by first-class mail. Confirm this is sufficient.
 6. **Non-refundable fees** (Condition 8). Confirm the exceptions are worded correctly.
 

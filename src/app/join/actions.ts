@@ -3,7 +3,7 @@
 import { business, onlineApplication, rules } from "@/config/gym";
 import { applicationSchema, issuesToErrors, type Application } from "@/lib/application-schema";
 import { ageOn, ageStatus } from "@/lib/age";
-import { formatMoney, quote, termLabel } from "@/lib/pricing";
+import { formatMoney, hasEnrollmentDeal, money, quote, termLabel } from "@/lib/pricing";
 import { emailLayout, escapeHtml, rowsTable, rowsText, sendEmail } from "@/lib/server/email";
 import { clientIp, formatTimestamp, rateLimited, referenceId, verifyTurnstile } from "@/lib/server/guard";
 
@@ -67,14 +67,19 @@ function gymEmail(app: Application, reference: string, submittedAt: string) {
     ["Consultant", "Online application"],
     ["Membership type", `${q.plan.name}${app.family.length ? ` + ${app.family.length} additional` : ""}`],
     ["Initial number of months", q.plan.termMonths ? String(q.plan.termMonths) : "Month-to-month"],
-    ["Enrollment fee", formatMoney(q.enrollmentCents)],
+    [
+      "Enrollment fee",
+      hasEnrollmentDeal(q.plan)
+        ? `${formatMoney(q.enrollmentCents)} (${q.plan.badge || "special offer"}, normally ${money(q.plan.regularEnrollmentFee)})`
+        : formatMoney(q.enrollmentCents),
+    ],
     ["First month's dues", formatMoney(q.firstMonthCents)],
     ["Last month's dues", q.plan.lastMonthDueAtSignup ? formatMoney(q.lastMonthCents) : "Not required"],
     ["Total due at signing", formatMoney(q.dueTodayCents)],
     ["Initial number of payments", q.remainingPayments === null ? "Ongoing (month-to-month)" : String(q.remainingPayments)],
     ["Monthly amount", formatMoney(q.monthlyCents)],
     ["First payment due", "1 month after signing"],
-    ["Club Improvement fee", `${formatMoney(q.annualFeeCents)} each ${q.annualFeeMonth}`],
+    ["Club Improvement fee", q.annualFeeText],
     ["Early cancellation fee", q.earlyCancellation],
   ];
 
@@ -174,7 +179,7 @@ function applicantEmail(app: Application, reference: string) {
       "Monthly payments after signing",
       q.remainingPayments === null ? "Every month until you cancel" : String(q.remainingPayments),
     ],
-    ["Club Improvement fee", `${formatMoney(q.annualFeeCents)} each ${q.annualFeeMonth}`],
+    ["Club Improvement fee", q.annualFeeText],
     ["Early cancellation fee", q.earlyCancellation],
   ];
   const steps = onlineApplication.nextSteps;

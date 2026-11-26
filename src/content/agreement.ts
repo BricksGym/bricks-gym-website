@@ -15,7 +15,7 @@
  * ============================================================================
  */
 import { afterTerm, business, fees, plans, rules } from "@/config/gym";
-import { earlyCancellationText, money } from "@/lib/pricing";
+import { earlyCancellationText, money, plansWithoutAnnualFee } from "@/lib/pricing";
 import { ordinal } from "@/lib/fee-list";
 
 export const AGREEMENT_VERSION = "DRAFT 2026-11-25";
@@ -85,7 +85,7 @@ export function agreementSections(): AgreementSection[] {
       title: "4. Annual Club Improvement fee",
       initial: true,
       body: [
-        `A Club Improvement fee of ${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} is charged once a year, in ${f.annualClubImprovement.month}. The Primary member pays this fee for all additional members.`,
+        `A Club Improvement fee of ${money(f.annualClubImprovement.amount)}${f.annualClubImprovement.perMember ? " per member" : ""} is charged once a year, in ${f.annualClubImprovement.month}. The Primary member pays this fee for all additional members.${plansWithoutAnnualFee() ? ` This fee is not charged on ${plansWithoutAnnualFee()} memberships.` : ""}`,
       ],
     },
     {

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { afterTerm, business, clubSystems, extraFaqs, fees, remodel, rules } from "@/config/gym";
+import { afterTerm, business, clubSystems, extraFaqs, fees, plans, remodel, rules } from "@/config/gym";
 import { PageHero, Section } from "@/components/ui";
-import { money } from "@/lib/pricing";
+import { money, plansWithoutAnnualFee } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -60,7 +60,9 @@ function faqs(): Faq[] {
     },
     {
       q: "What do I pay when I sign up?",
-      a: "The enrollment fee and your first month's dues, plus last month's dues on plans that require it. Each plan card shows the exact total due at signup.",
+      a: plans.some((p) => p.lastMonthDueAtSignup)
+        ? "The enrollment fee and your first month's dues, plus last month's dues on plans that require it. Each plan card shows the exact total due at signup."
+        : `The enrollment fee and your first month's dues. ${plans.filter((p) => p.enrollmentFee === 0).map((p) => `The ${p.name} plan has no enrollment fee, so you pay only the first month.`).join(" ")} Each plan card shows the exact total due at signup.`.replace(/\s+/g, " "),
       link: { href: "/memberships", label: "Compare plans" },
     },
     {
@@ -104,7 +106,7 @@ function faqs(): Faq[] {
     },
     {
       q: "What is the Club Improvement fee?",
-      a: `A yearly fee of ${money(fees.annualClubImprovement.amount)}${fees.annualClubImprovement.perMember ? " per member" : ""}, billed each ${fees.annualClubImprovement.month}. The Primary member pays it for everyone on the membership.`,
+      a: `A yearly fee of ${money(fees.annualClubImprovement.amount)}${fees.annualClubImprovement.perMember ? " per member" : ""}, billed each ${fees.annualClubImprovement.month}. The Primary member pays it for everyone on the membership.${plansWithoutAnnualFee() ? ` ${plansWithoutAnnualFee()} memberships don't pay it.` : ""}`,
     },
     {
       q: "Can I just come in for a day?",

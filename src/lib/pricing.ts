@@ -44,6 +44,16 @@ export function earlyCancellationText(plan: Plan): string {
   return ec.orRemainingDuesIfLess ? `${money(ec.fee)} or remaining dues, whichever is less` : money(ec.fee);
 }
 
+/** True when the plan shows a crossed-out "usual" enrollment fee. */
+export function hasEnrollmentDeal(plan: Plan): plan is Plan & { regularEnrollmentFee: number } {
+  return typeof plan.regularEnrollmentFee === "number" && plan.regularEnrollmentFee > plan.enrollmentFee;
+}
+
+/** Names of the plans with no Club Improvement fee, e.g. "Month-to-Month". */
+export function plansWithoutAnnualFee(): string {
+  return plans.filter((p) => !p.annualFee).map((p) => p.name).join(" and ");
+}
+
 export type QuoteLine = { label: string; cents: number };
 
 export type Quote = {
@@ -65,8 +75,11 @@ export type Quote = {
   remainingPayments: number | null;
   /** Sum of all monthly dues over the initial term. null for month-to-month. */
   termDuesTotalCents: number | null;
+  /** 0 when the plan has no Club Improvement fee. */
   annualFeeCents: number;
   annualFeeMonth: string;
+  /** "$59.99 each March" or "None on this plan". */
+  annualFeeText: string;
   earlyCancellation: string;
 };
 
@@ -85,7 +98,12 @@ export function quote(planId: PlanId, additionalMembers = 0): Quote {
   const lastMonthCents = plan.lastMonthDueAtSignup ? monthlyCents : 0;
 
   const dueTodayLines: QuoteLine[] = [
-    { label: "Enrollment fee", cents: enrollmentCents },
+    {
+      label: hasEnrollmentDeal(plan)
+        ? `Enrollment fee (waived, normally ${money(plan.regularEnrollmentFee)})`
+        : "Enrollment fee",
+      cents: enrollmentCents,
+    },
     { label: "First month's dues", cents: firstMonthCents },
   ];
   if (plan.lastMonthDueAtSignup) {
@@ -104,7 +122,12 @@ export function quote(planId: PlanId, additionalMembers = 0): Quote {
   }
 
   const annual = fees.annualClubImprovement;
-  const annualFeeCents = toCents(annual.amount) * (annual.perMember ? memberCount : 1);
+  const annualFeeCents = plan.annualFee
+    ? toCents(annual.amount) * (annual.perMember ? memberCount : 1)
+    : 0;
+  const annualFeeText = plan.annualFee
+    ? `${formatMoney(annualFeeCents)} each ${annual.month}`
+    : "None on this plan";
 
   return {
     plan,
@@ -120,6 +143,7 @@ export function quote(planId: PlanId, additionalMembers = 0): Quote {
     termDuesTotalCents,
     annualFeeCents,
     annualFeeMonth: annual.month,
+    annualFeeText,
     earlyCancellation: earlyCancellationText(plan),
   };
 }

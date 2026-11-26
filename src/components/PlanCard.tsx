@@ -1,5 +1,5 @@
 import { afterTerm, fees, type Plan } from "@/config/gym";
-import { formatMoney, money, quote, termLabel } from "@/lib/pricing";
+import { formatMoney, hasEnrollmentDeal, money, quote, termLabel } from "@/lib/pricing";
 import { joinHref } from "@/lib/links";
 import { JoinLink } from "@/components/JoinLink";
 
@@ -12,8 +12,8 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
       className={`relative flex flex-col rounded-md border-2 bg-white ${featured ? "border-brick" : "border-ink/15"}`}
       aria-labelledby={`plan-${plan.id}`}
     >
-      {featured && (
-        <p className="stamp absolute -top-3 left-4 rounded bg-brick px-2 py-0.5 text-xs text-white">Most popular</p>
+      {plan.badge && (
+        <p className="stamp absolute -top-3 left-4 rounded bg-brick px-2 py-0.5 text-xs text-white">{plan.badge}</p>
       )}
       <div className="flex-1 px-5 pb-4 pt-6">
         <h3 id={`plan-${plan.id}`} className="font-display text-2xl text-ink">
@@ -25,6 +25,18 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
         </p>
         <p className="mt-1 text-sm text-concrete">
           {termLabel(plan)} · {formatMoney(q.dueTodayCents)} due at signup
+        </p>
+        <p className="mt-2 text-sm">
+          {hasEnrollmentDeal(plan) ? (
+            <>
+              <s className="text-concrete">{money(plan.regularEnrollmentFee)} enrollment</s>{" "}
+              <strong className="text-brick">{plan.enrollmentFee > 0 ? `${money(plan.enrollmentFee)} enrollment` : "No enrollment fee"}</strong>
+            </>
+          ) : (
+            <span className="text-iron">
+              {plan.enrollmentFee > 0 ? `${money(plan.enrollmentFee)} enrollment` : "No enrollment fee"}
+            </span>
+          )}
         </p>
         <p className="mt-3 text-sm text-iron">{plan.blurb}</p>
       </div>
@@ -38,13 +50,28 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
             See full costs
           </summary>
           <dl className="mt-3 divide-y divide-ink/10 border-t border-ink/10">
-            <Row label="Enrollment fee" value={money(plan.enrollmentFee)} />
+            <Row
+              label="Enrollment fee"
+              value={
+                hasEnrollmentDeal(plan) ? (
+                  <>
+                    <s className="text-concrete">{money(plan.regularEnrollmentFee)}</s> {money(plan.enrollmentFee)}
+                  </>
+                ) : (
+                  money(plan.enrollmentFee)
+                )
+              }
+            />
             <Row label="First month's dues" value={money(plan.monthlyDues)} />
             {plan.lastMonthDueAtSignup && <Row label="Last month's dues" value={money(plan.monthlyDues)} />}
             <Row label="Due at signup" value={formatMoney(q.dueTodayCents)} strong />
             <Row
               label="Club Improvement fee"
-              value={`${money(fees.annualClubImprovement.amount)}/yr (${fees.annualClubImprovement.month})`}
+              value={
+                plan.annualFee
+                  ? `${money(fees.annualClubImprovement.amount)}/yr (${fees.annualClubImprovement.month})`
+                  : "None"
+              }
             />
             <Row label="Early cancellation" value={q.earlyCancellation} />
           </dl>
@@ -57,7 +84,7 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
   );
 }
 
-function Row({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+function Row({ label, value, strong }: { label: string; value: React.ReactNode; strong?: boolean }) {
   return (
     <div className="flex items-start justify-between gap-4 py-1.5">
       <dt className="text-concrete">{label}</dt>

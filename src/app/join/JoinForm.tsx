@@ -255,6 +255,11 @@ export function JoinForm() {
                         <span className="block text-sm text-concrete">
                           {money(p.monthlyDues)}/mo · {termLabel(p)}
                         </span>
+                        {p.badge && (
+                          <span className="mt-1 inline-block rounded bg-brick px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">
+                            {p.badge}
+                          </span>
+                        )}
                       </span>
                     </label>
                   ))}
@@ -377,7 +382,7 @@ export function JoinForm() {
                   {q.termDuesTotalCents !== null && (
                     <Row label={`Total dues for the ${q.plan.termMonths}-month term`} value={formatMoney(q.termDuesTotalCents)} />
                   )}
-                  <Row label="Club Improvement fee" value={`${formatMoney(q.annualFeeCents)} each ${q.annualFeeMonth}`} />
+                  <Row label="Club Improvement fee" value={q.annualFeeText} />
                   <Row label="Early cancellation fee" value={q.earlyCancellation} />
                 </dl>
                 <p className="border-t border-ink/10 px-4 py-3 text-sm text-concrete">

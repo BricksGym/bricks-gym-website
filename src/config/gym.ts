@@ -95,12 +95,19 @@ export type Plan = {
   name: string;
   /** Length of the commitment in months. null = month-to-month (no term). */
   termMonths: number | null;
-  /** One-time fee paid at signup by the Primary member. */
+  /** One-time fee paid at signup by the Primary member. 0 = no enrollment fee. */
   enrollmentFee: number;
+  /**
+   * The usual enrollment fee, shown crossed out next to a special price.
+   * Leave it out (or delete the line) to show no crossed-out price.
+   */
+  regularEnrollmentFee?: number;
   /** Monthly dues for the Primary member. */
   monthlyDues: number;
   /** Is the last month's dues collected at signup? */
   lastMonthDueAtSignup: boolean;
+  /** Is the yearly Club Improvement fee (section 5) charged on this plan? */
+  annualFee: boolean;
   /** Fee to end the contract before the term is over. null = none. */
   earlyCancellation: null | {
     fee: number;
@@ -109,28 +116,36 @@ export type Plan = {
   };
   /** Short selling point shown on the card. */
   blurb: string;
-  /** Highlight this card as the best value. */
+  /** Highlight this card with a red border. */
   featured?: boolean;
+  /** Small red tag on top of the card, e.g. "Founding member offer". "" or left out = no tag. */
+  badge?: string;
 };
 
+/**
+ * Due at signup: the enrollment fee plus the first month's dues.
+ * After that, dues are billed monthly.
+ */
 export const plans: Plan[] = [
   {
     id: "month-to-month",
     name: "Month-to-Month",
     termMonths: null,
-    enrollmentFee: 49, // PLACEHOLDER
-    monthlyDues: 44.99, // PLACEHOLDER
-    lastMonthDueAtSignup: false, // PLACEHOLDER
+    enrollmentFee: 49.99,
+    monthlyDues: 54.99,
+    lastMonthDueAtSignup: false,
+    annualFee: false, // no annual fee on month-to-month
     earlyCancellation: null,
-    blurb: "No long-term commitment. Cancel with 30 days' written notice.",
+    blurb: "No long-term commitment and no annual fee. Cancel with 30 days' written notice.",
   },
   {
     id: "6-month",
     name: "6-Month",
     termMonths: 6,
-    enrollmentFee: 49, // PLACEHOLDER
-    monthlyDues: 39.99, // PLACEHOLDER
-    lastMonthDueAtSignup: true, // PLACEHOLDER
+    enrollmentFee: 49.99,
+    monthlyDues: 44.99,
+    lastMonthDueAtSignup: false,
+    annualFee: true,
     earlyCancellation: { fee: 149, orRemainingDuesIfLess: true }, // PLACEHOLDER (6-month fee not set yet)
     blurb: "A short commitment to build the habit.",
   },
@@ -138,24 +153,28 @@ export const plans: Plan[] = [
     id: "12-month",
     name: "12-Month",
     termMonths: 12,
-    enrollmentFee: 29, // PLACEHOLDER
-    monthlyDues: 34.99, // PLACEHOLDER
-    lastMonthDueAtSignup: true, // PLACEHOLDER
+    enrollmentFee: 49.99,
+    monthlyDues: 34.99,
+    lastMonthDueAtSignup: false,
+    annualFee: true,
     earlyCancellation: { fee: 199, orRemainingDuesIfLess: true }, // from current agreement
-    blurb: "Our most popular plan. Lower dues for a year of work.",
-    featured: true,
+    blurb: "Lower dues for a full year of training.",
   },
   {
     id: "24-month",
     name: "24-Month",
     termMonths: 24,
-    enrollmentFee: 0, // PLACEHOLDER
-    monthlyDues: 29.99, // PLACEHOLDER
-    lastMonthDueAtSignup: true, // PLACEHOLDER
+    enrollmentFee: 0, // Founding member offer: no enrollment fee
+    regularEnrollmentFee: 49.99, // shown crossed out
+    monthlyDues: 29.99,
+    lastMonthDueAtSignup: false,
+    annualFee: true,
     // $299 is from the current agreement. PLACEHOLDER: confirm whether
     // "or remaining dues, whichever is less" also applies.
     earlyCancellation: { fee: 299, orRemainingDuesIfLess: true },
-    blurb: "The lowest monthly rate. For the long haul.",
+    blurb: "Founding member special: our lowest monthly rate and no enrollment fee.",
+    featured: true,
+    badge: "Founding member offer",
   },
 ];
 
@@ -185,11 +204,14 @@ export const afterTerm = {
 // 5. FEES (current agreement amounts — all adjustable)
 // ---------------------------------------------------------------------------
 export const fees = {
-  /** Yearly "Club Improvement" fee, charged per member, paid by the Primary. */
+  /**
+   * Yearly "Club Improvement" fee, paid by the Primary. Charged only on plans
+   * with annualFee: true in section 4 (not month-to-month).
+   */
   annualClubImprovement: {
-    amount: 45, // PLACEHOLDER (subject to change)
-    month: "March", // PLACEHOLDER (March, June or November)
-    perMember: true,
+    amount: 59.99, // subject to change
+    month: "March",
+    perMember: true, // PLACEHOLDER (confirm: charged for each family member too?)
   },
   dayPass: 15,
   freeze: {

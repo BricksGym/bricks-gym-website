@@ -75,6 +75,11 @@ export default function Home() {
                 <span className="block font-condensed text-sm font-semibold uppercase tracking-wider text-concrete">{p.name}</span>
                 <span className="mt-1 block font-display text-3xl text-brick">{money(p.monthlyDues)}</span>
                 <span className="block text-sm text-concrete">per month</span>
+                {p.badge && (
+                  <span className="mt-2 inline-block rounded bg-brick px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">
+                    {p.badge}
+                  </span>
+                )}
               </Link>
             </li>
           ))}

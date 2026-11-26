@@ -26,8 +26,9 @@ describe("quote", () => {
       );
       expect(q.dueTodayLines.reduce((s, l) => s + l.cents, 0)).toBe(q.dueTodayCents);
       expect(q.annualFeeCents).toBe(
-        toCents(fees.annualClubImprovement.amount) *
-          (fees.annualClubImprovement.perMember ? 3 : 1),
+        plan.annualFee
+          ? toCents(fees.annualClubImprovement.amount) * (fees.annualClubImprovement.perMember ? 3 : 1)
+          : 0,
       );
       if (plan.termMonths) {
         // Payments today + remaining payments never exceed the term.
@@ -39,6 +40,15 @@ describe("quote", () => {
       }
     });
   }
+
+  it("month-to-month has no annual fee; 24-month has no enrollment fee", () => {
+    expect(quote("month-to-month").annualFeeCents).toBe(0);
+    expect(quote("month-to-month").annualFeeText).toBe("None on this plan");
+    const q24 = quote("24-month");
+    expect(q24.enrollmentCents).toBe(0);
+    expect(q24.dueTodayCents).toBe(toCents(29.99));
+    expect(quote("12-month").dueTodayCents).toBe(toCents(49.99) + toCents(34.99));
+  });
 
   it("ignores negative or fractional member counts", () => {
     expect(quote("12-month", -3).additionalMembers).toBe(0);
