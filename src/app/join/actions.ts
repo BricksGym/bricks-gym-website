@@ -45,12 +45,17 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
   const submittedAt = formatTimestamp();
   try {
     await sendEmail(gymEmail(app, reference, submittedAt));
-    await sendEmail(applicantEmail(app, reference));
   } catch {
     return {
       ok: false,
       message: `Sorry, something went wrong sending your application. Please try again or call us at ${business.phone}.`,
     };
+  }
+  // The applicant's copy is a courtesy: if it can't be sent, the application still went through.
+  try {
+    await sendEmail(applicantEmail(app, reference));
+  } catch {
+    console.error(`Applicant copy not sent for ${reference}`);
   }
   return { ok: true, reference };
 }

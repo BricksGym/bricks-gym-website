@@ -27,7 +27,15 @@
  * placeholders so nobody mistakes filler prices for real ones.
  * Set to false only once every PLACEHOLDER below has a real value.
  */
-export const PRELAUNCH = true;
+export const PRELAUNCH = false;
+
+function siteAddress(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/$/, "");
+  const vercel =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  return vercel ? `https://${vercel}` : "https://thebricksgym.com";
+}
 
 // ---------------------------------------------------------------------------
 // 2. BUSINESS DETAILS
@@ -49,14 +57,18 @@ export const business = {
   },
   /** From public listings for this address — confirm before launch. */
   phone: "(831) 728-1280", // PLACEHOLDER (from an online listing — confirm)
-  /** Public email shown on the site. Empty ("") = hidden. Use a Bricks Gym address, e.g. hello@thebricksgym.com. */
-  email: "", // PLACEHOLDER (needed before launch: members must be able to cancel by email)
+  /** Public email shown on the site and in the agreement. Empty ("") = hidden. Switch to a Bricks Gym address later, e.g. hello@thebricksgym.com. */
+  email: "831bodyzone@gmail.com",
   /** Where membership applications, contact messages and cancellations are sent. Never shown on the site. */
   inboxEmail: "831bodyzone@gmail.com",
   /** Mailing address for written notices (cancellations, etc.). */
   noticeAddress: "Bricks Gym, Attn: Owner, 1810 Main Street, Watsonville, CA 95076",
-  /** Website address once you buy a domain, no trailing slash. */
-  siteUrl: "https://thebricksgym.com", // chosen domain — must be purchased and connected in Vercel
+  /**
+   * Website address, no trailing slash. On Vercel this follows the site's real
+   * main address automatically (the vercel.app address until thebricksgym.com
+   * is connected, then thebricksgym.com after the next deploy).
+   */
+  siteUrl: siteAddress(),
   social: {
     instagram: "", // PLACEHOLDER e.g. "https://instagram.com/bricksgym"
     facebook: "", // PLACEHOLDER

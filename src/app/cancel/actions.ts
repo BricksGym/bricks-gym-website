@@ -57,6 +57,16 @@ export async function submitCancellation(input: unknown): Promise<FormResult> {
       ),
       text: `ONLINE CANCELLATION REQUEST\n${rowsText(rows)}`,
     });
+  } catch {
+    return {
+      ok: false,
+      message: `Sorry, we couldn't submit your request. Please try again${business.email ? `, email ${business.email}` : ""}, call ${business.phone}, or mail your notice to ${business.noticeAddress}.`,
+    };
+  }
+
+  // The member's copy is a courtesy: the request is already recorded, and the
+  // confirmation page shows the request number and time.
+  try {
     await sendEmail({
       to: c.email,
       subject: `We received your cancellation request (${reference})`,
@@ -70,10 +80,7 @@ export async function submitCancellation(input: unknown): Promise<FormResult> {
       text: `We received your request to cancel your ${business.name} membership on ${timestamp}. Request number: ${reference}. Keep this email as proof of cancellation.`,
     });
   } catch {
-    return {
-      ok: false,
-      message: `Sorry, we couldn't submit your request. Please try again${business.email ? `, email ${business.email}` : ""}, call ${business.phone}, or mail your notice to ${business.noticeAddress}.`,
-    };
+    console.error(`Member copy not sent for ${reference}`);
   }
   return { ok: true, reference, timestamp };
 }
