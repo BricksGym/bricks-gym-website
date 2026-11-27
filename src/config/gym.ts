@@ -136,6 +136,7 @@ export const plans: Plan[] = [
     name: "24-Month",
     termMonths: 24,
     enrollmentFee: 0,
+    regularEnrollmentFee: 49.99, // shown crossed out next to $0
     monthlyDues: 29.99,
     lastMonthDueAtSignup: false,
     annualFee: true,

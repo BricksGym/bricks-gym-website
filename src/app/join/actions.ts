@@ -78,7 +78,7 @@ function summaryRows(app: Application, q: Quote): Rows {
     [
       "Enrollment fee",
       hasEnrollmentDeal(q.plan)
-        ? `${formatMoney(q.enrollmentCents)} (${q.plan.badge || "special offer"}, normally ${money(q.plan.regularEnrollmentFee)})`
+        ? `${formatMoney(q.enrollmentCents)} (normally ${money(q.plan.regularEnrollmentFee)})`
         : formatMoney(q.enrollmentCents),
     ],
     ["First month's dues", formatMoney(q.firstMonthCents)],

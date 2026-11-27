@@ -37,10 +37,9 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
         </p>
         <p className="mt-2 text-sm">
           {hasEnrollmentDeal(plan) ? (
-            <>
-              <s className="text-concrete">{money(plan.regularEnrollmentFee)} enrollment</s>{" "}
-              <strong className="text-brick">{plan.enrollmentFee > 0 ? `${money(plan.enrollmentFee)} enrollment` : "No enrollment fee"}</strong>
-            </>
+            <span className="text-iron">
+              <s className="text-concrete">{money(plan.regularEnrollmentFee)}</s> {money(plan.enrollmentFee)} enrollment
+            </span>
           ) : (
             <span className="text-iron">
               {money(plan.enrollmentFee)} enrollment
