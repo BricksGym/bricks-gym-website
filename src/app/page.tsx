@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { amenities, business, fees, photos, plans, remodel, testimonials } from "@/config/gym";
 import { Logo } from "@/components/Logo";
-import { joinHref } from "@/lib/links";
 import { HoursTable } from "@/components/HoursTable";
 import { MapEmbed } from "@/components/MapEmbed";
 import { JoinLink } from "@/components/JoinLink";
+import { PlanCard } from "@/components/PlanCard";
 import { ButtonLink, ComingSoon, Container, Eyebrow, H2, PrelaunchNote, RatesNote, Section } from "@/components/ui";
 import { money } from "@/lib/pricing";
 
@@ -58,7 +58,7 @@ export default function Home() {
         </section>
       )}
 
-      {/* Plans (short version; full details on the Memberships page) */}
+      {/* Plans: the same cards as the Memberships page */}
       <Section>
         <Eyebrow>Memberships</Eyebrow>
         <H2>Plans from {money(Math.min(...plans.map((p) => p.monthlyDues)))}/month</H2>
@@ -66,31 +66,18 @@ export default function Home() {
         <div className="mt-4">
           <PrelaunchNote>Prices shown are sample numbers until final pricing is set.</PrelaunchNote>
         </div>
-        <ul className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {plans.map((p) => (
-            <li key={p.id}>
-              <Link
-                href={joinHref(p.id)}
-                className={`block h-full rounded-md border-2 p-4 text-center transition-colors ${
-                  p.featured
-                    ? "border-brick bg-brick text-white shadow-lg shadow-brick/25 hover:bg-brick-dark"
-                    : "border-ink/15 hover:border-brick"
-                }`}
-              >
-                <span className={`block font-condensed text-sm font-semibold uppercase tracking-wider ${p.featured ? "text-white/85" : "text-concrete"}`}>
-                  {p.name}
-                </span>
-                <span className={`mt-1 block font-display text-3xl ${p.featured ? "text-white" : "text-brick"}`}>{money(p.monthlyDues)}</span>
-                <span className={`block text-sm ${p.featured ? "text-white/85" : "text-concrete"}`}>per month</span>
-                {p.badge && (
-                  <span className="mt-2 inline-block rounded bg-white px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-brick">
-                    {p.badge}
-                  </span>
-                )}
-              </Link>
-            </li>
+            <PlanCard key={p.id} plan={p} location="home" />
           ))}
-        </ul>
+        </div>
+        <p className="mt-6 text-sm text-iron">
+          Every plan&apos;s full costs, including the annual fee and cancellation fees, are in our{" "}
+          <Link href="/legal/membership-terms#sec-plans" className="font-semibold text-brick underline">
+            Membership Terms
+          </Link>
+          .
+        </p>
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <ButtonLink href="/memberships">See plans &amp; join</ButtonLink>
           <Link href="/memberships#day-pass" className="font-semibold text-brick underline underline-offset-4">
