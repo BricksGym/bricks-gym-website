@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { PRELAUNCH } from "@/config/gym";
+import { PRELAUNCH, ratesNote } from "@/config/gym";
 import { isExternal } from "@/lib/links";
 
 export type ButtonVariant = "primary" | "dark" | "outline" | "outline-light";
@@ -106,5 +106,13 @@ export function Prose({ children }: { children: ReactNode }) {
     <div className="max-w-3xl space-y-4 text-[17px] leading-relaxed text-iron [&_a]:font-semibold [&_a]:text-brick [&_a]:underline [&_h2]:pt-6 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:text-ink [&_h3]:pt-2 [&_h3]:font-condensed [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:uppercase [&_h3]:tracking-wide [&_h3]:text-ink [&_ol]:space-y-2 [&_ol]:pl-6 [&_ol>li]:list-decimal [&_strong]:text-ink [&_ul]:space-y-2 [&_ul]:pl-6 [&_ul>li]:list-disc">
       {children}
     </div>
+  );
+}
+
+/** "Only valid until Dec. 31, prices subject to change." (set in src/config/gym.ts) */
+export function RatesNote({ className = "" }: { className?: string }) {
+  if (!ratesNote) return null;
+  return (
+    <p className={`font-condensed text-sm font-semibold uppercase tracking-wider text-concrete ${className}`}>{ratesNote}</p>
   );
 }

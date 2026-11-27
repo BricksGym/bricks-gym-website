@@ -43,7 +43,7 @@ export function PlanCard({ plan, location }: { plan: Plan; location: string }) {
             </>
           ) : (
             <span className="text-iron">
-              {plan.enrollmentFee > 0 ? `${money(plan.enrollmentFee)} enrollment` : "No enrollment fee"}
+              {money(plan.enrollmentFee)} enrollment
             </span>
           )}
         </p>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { additionalMember, clubSystems, fees, onlineApplication, plans, rules } from "@/config/gym";
 import { PlanCard } from "@/components/PlanCard";
-import { ButtonLink, Eyebrow, H2, PageHero, PrelaunchNote, Section } from "@/components/ui";
+import { ButtonLink, Eyebrow, H2, PageHero, PrelaunchNote, RatesNote, Section } from "@/components/ui";
 import { money } from "@/lib/pricing";
 import { otherFees } from "@/lib/fee-list";
 
@@ -22,6 +22,7 @@ export default function MembershipsPage() {
       </PageHero>
 
       <Section>
+        <RatesNote />
         <PrelaunchNote>Prices shown are sample numbers until final pricing is set.</PrelaunchNote>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {plans.map((p) => (

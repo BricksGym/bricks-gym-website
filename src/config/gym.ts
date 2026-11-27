@@ -118,7 +118,7 @@ export type Plan = {
   blurb: string;
   /** Highlight this card with a red border. */
   featured?: boolean;
-  /** Small red tag on top of the card, e.g. "Founding member offer". "" or left out = no tag. */
+  /** Small red tag on top of the card, e.g. "New". "" or left out = no tag. */
   badge?: string;
 };
 
@@ -127,22 +127,22 @@ export type Plan = {
  * After that, dues are billed monthly.
  * Plans show on the site in this order (currently lowest price first).
  */
+/** Shown with the prices on the website (and on the printed sheet). Empty ("") = hidden. */
+export const ratesNote = "Only valid until Dec. 31, prices subject to change.";
+
 export const plans: Plan[] = [
   {
     id: "24-month",
     name: "24-Month",
     termMonths: 24,
-    enrollmentFee: 0, // Founding member offer: no enrollment fee
-    regularEnrollmentFee: 49.99, // shown crossed out
+    enrollmentFee: 0,
     monthlyDues: 29.99,
     lastMonthDueAtSignup: false,
     annualFee: true,
     // $299 is from the current agreement. PLACEHOLDER: confirm whether
     // "or remaining dues, whichever is less" also applies.
     earlyCancellation: { fee: 299, orRemainingDuesIfLess: true },
-    blurb: "Lock in our best rate as a founding member.",
-    featured: true,
-    badge: "Founding member offer",
+    blurb: "A two-year commitment.",
   },
   {
     id: "12-month",

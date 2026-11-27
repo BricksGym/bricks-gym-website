@@ -6,7 +6,7 @@ import { joinHref } from "@/lib/links";
 import { HoursTable } from "@/components/HoursTable";
 import { MapEmbed } from "@/components/MapEmbed";
 import { JoinLink } from "@/components/JoinLink";
-import { ButtonLink, ComingSoon, Container, Eyebrow, H2, PrelaunchNote, Section } from "@/components/ui";
+import { ButtonLink, ComingSoon, Container, Eyebrow, H2, PrelaunchNote, RatesNote, Section } from "@/components/ui";
 import { money } from "@/lib/pricing";
 
 export default function Home() {
@@ -62,6 +62,7 @@ export default function Home() {
       <Section>
         <Eyebrow>Memberships</Eyebrow>
         <H2>Plans from {money(Math.min(...plans.map((p) => p.monthlyDues)))}/month</H2>
+        <RatesNote className="mt-2" />
         <div className="mt-4">
           <PrelaunchNote>Prices shown are sample numbers until final pricing is set.</PrelaunchNote>
         </div>

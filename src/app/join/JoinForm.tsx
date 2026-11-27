@@ -17,7 +17,7 @@ import {
 import { ageStatus } from "@/lib/age";
 import { formatMoney, hasEnrollmentDeal, isPlanId, money, quote, termLabel } from "@/lib/pricing";
 import { track } from "@/lib/analytics";
-import { buttonClass, PrelaunchNote, Prose } from "@/components/ui";
+import { buttonClass, PrelaunchNote, Prose, RatesNote } from "@/components/ui";
 import { Checkbox, FormAlert, Honeypot, TextArea, TextField, Turnstile } from "@/components/form";
 import { submitApplication } from "./actions";
 
@@ -261,6 +261,7 @@ export function JoinForm() {
         >
           {step === "plan" && (
             <>
+              <RatesNote />
               <PrelaunchNote>Prices shown are sample numbers until final pricing is set.</PrelaunchNote>
               <fieldset>
                 <legend className="font-semibold">Membership plan</legend>

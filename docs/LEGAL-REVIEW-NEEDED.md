@@ -8,7 +8,7 @@ Not legal advice. These items need a California attorney's review before launch.
 2. **Existing members** signed agreements with the 24-hour clause. Ask whether they need notice or any correction.
 3. **Death and disability; moving more than 25 miles.** Confirm that the $99 relocation fee and the $149 medical-cancellation fee are allowed, given the statute's cancellation rights for these events.
 4. **Payment term vs. contract term.** Confirm the post-term month-to-month continuation complies. (Last month's dues are no longer collected up front.)
-4b. **Founding member offer.** The 24-month plan shows the usual $49.99 enrollment fee crossed out. Confirm $49.99 is a price actually charged, so the "was" price is accurate (California and FTC rules on former-price comparisons), and whether the offer needs an end date.
+4b. **Rates note.** The website and printed sheet say "Only valid until Dec. 31, prices subject to change." Confirm price changes for existing members follow the 7–30 day notice in the agreement.
 5. **Ways to cancel.** The owner wants cancellations handled in person. The agreement now accepts cancellation in person, by email from the address on file (the website links a pre-written cancellation email), and by first-class mail. The online cancellation form was removed. Confirm this is sufficient now that members sign up and sign online.
 6. **Non-refundable fees** (Condition 8). Confirm the exceptions are worded correctly.
 
